@@ -4,11 +4,22 @@ var wol 		= require('wake_on_lan'),
 	optimist 	= require('optimist'),
 	util		= require('./lib/util.js'),
 	colors		= require('colors'),
+	config		= require('./config.json'),
 	dataGetter 	= require('./lib/dataGetter.js');
 
-//console.log(optimist)
+var argv = optimist.argv;
 
-switch (optimist.argv._[0]) {
+if (argv._.length == 0) {
+	if (argv.h){
+		console.log("TODO: help")
+	}
+	if (argv.v) {
+		console.log("Version: "+config.version)
+	}
+	process.exit(0)
+}
+
+switch (argv._[0]) {
 	case 'up':
 		var mac;
 		// Do we have at least 2 arguments?
@@ -17,7 +28,7 @@ switch (optimist.argv._[0]) {
 		}
 		
 		// Get the second argument
-		var data = optimist.argv._[1]
+		var data = argv._[1]
 
 		// if the argument is in the list of saved, get it...
 		var device = util.getSaved(data, dataGetter.savedItems())
