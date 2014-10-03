@@ -1,0 +1,17 @@
+{
+  "name": "wol",
+  "version": "1.0.0",
+  "description": "WoL command line tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cli-table": "^0.3.0",
+    "colors": "^1.0.2",
+    "optimist": "^0.6.1",
+    "wake_on_lan": "0.0.3"
+  }
+}
