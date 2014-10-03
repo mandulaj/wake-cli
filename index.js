@@ -5,18 +5,18 @@ var wol 		= require('wake_on_lan'),
 	util		= require('./lib/util.js'),
 	colors		= require('colors'),
 	config		= require('./config.json'),
+	prompt		= require('prompt'),
 	dataGetter 	= require('./lib/dataGetter.js');
 
 var argv = optimist.argv;
 
 if (argv._.length == 0) {
 	if (argv.h){
-		console.log("TODO: help")
+		console.log("TODO: help");
 	} else if (argv.v) {
-		console.log("Version: "+config.version)
+		console.log("Version: "+config.version);
 	} else {
-		console.log("  Usage:".red.bold + " wake {up|list|add}")
-		console.log("  wake -h".bold + " for more help")
+		printGeneralHelp();
 	}
 	process.exit(0)
 }
@@ -100,8 +100,58 @@ switch (argv._[0]) {
 		// save the device
 		dataGetter.addItem(device)
 		break;
+	case 'rm':
+		if (argv.h) { // user wants help
+			console.log("TODO: rm help");
+			process.exit(0);
+		}
+
+		if (argv._.length < 2) {
+			util.failRm();
+			process.exit(-1);
+		}
+
+		var name = argv._[1];
+
+		var item = util.getSaved(name, dataGetter.savedItems());
+
+		if(item) {
+			var schema = {
+				properties: {
+					confirm: {
+						description: "Are you sure? [y/n]",
+						type: 'string',
+						pattern: "^[yn]",
+						message: "Only type 'y' or 'n'",
+						required: true
+					}
+				}
+			}
+			prompt.message = "";
+			prompt.delimiter = "";
+			prompt.start();
+
+			prompt.get(schema, function(err, data){
+				if (err) {
+					throw err;
+				}
+				if (data.confirm == "y") {
+					dataGetter.removeItem(name);
+				} else {
+					process.exit(0);
+				}
+			});
+			
+		} else {
+			console.log("   Error: ".red + "device '" + name + "' does not exist");
+		}
+		break;
 	default:
-		console.log("  Usage:".red.bold + " wake {up|list|add}")
-		console.log("  wake -h".bold + " for more help")
+		printGeneralHelp();
+}
+
+function printGeneralHelp() {
+	console.log("  Usage:".red.bold + " wake {up|list|add|rm}");
+	console.log("  wake -h".bold + " for more help");
 }
 

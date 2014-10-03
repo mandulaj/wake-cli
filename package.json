@@ -12,6 +12,7 @@
     "cli-table": "^0.3.0",
     "colors": "^1.0.2",
     "optimist": "^0.6.1",
+    "prompt": "^0.2.14",
     "wake_on_lan": "0.0.3"
   }
 }
