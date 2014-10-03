@@ -12,18 +12,24 @@ var argv = optimist.argv;
 if (argv._.length == 0) {
 	if (argv.h){
 		console.log("TODO: help")
-	}
-	if (argv.v) {
+	} else if (argv.v) {
 		console.log("Version: "+config.version)
+	} else {
+		console.log("  Usage:".red.bold + " wake {up|list|add}")
+		console.log("  wake -h".bold + " for more help")
 	}
 	process.exit(0)
 }
 
 switch (argv._[0]) {
 	case 'up':
+		if (argv.h) {
+			console.log("TODO: up help");
+			process.exit(0);
+		}
 		var mac;
 		// Do we have at least 2 arguments?
-		if (optimist.argv._.length < 2) {
+		if (argv._.length < 2) {
 			util.failUp();
 		}
 		
@@ -55,6 +61,45 @@ switch (argv._[0]) {
 		dataGetter.listSaved();
 		break;
 	case 'add':
+		if (argv.h) { // user wants help
+			console.log("TODO: add help");
+			process.exit(0);
+		}
+
+		if (argv._.length < 3) {
+			util.failAdd();
+			process.exit(-1);
+		}
+
+		// get the name and mac
+		var name = argv._[1];
+		var mac = argv._[2];
+
+		// is the MAC valid?
+		if (!util.checkMac(mac.toString())) {
+			console.log("  Error: ".red + "Invalid MAC");
+			process.exit(-1);
+		}
+		// check if the name is free
+		if (dataGetter.deviceExists(name)) {
+			console.log("  Error: ".red + "device '" + name + "' already exists!");
+			process.exit(-1);
+		}
+
+		// use the uglifyed version for storage
+		mac = util.uglifyMac(mac);
+
+		// construct the object
+		var device = {
+			name: name,
+			mac: mac,
+			created: Date.now(),
+			lastUse: Date.now()
+		}
+
+		// save the device
+		dataGetter.addItem(device)
+		break;
 	default:
 		console.log("  Usage:".red.bold + " wake {up|list|add}")
 		console.log("  wake -h".bold + " for more help")
