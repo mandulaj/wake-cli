@@ -37,7 +37,7 @@ switch (argv._[0]) {
 		var data = argv._[1]
 
 		// if the argument is in the list of saved, get it...
-		var device = util.getSaved(data, dataGetter.savedItems())
+		var device = util.getSaved(data, dataGetter.getItems())
 		if (!device) { // If not...
 			if (!util.checkMac(data)) { // Is it even a mac?
 				util.failUp();
@@ -113,9 +113,8 @@ switch (argv._[0]) {
 
 		var name = argv._[1];
 
-		var item = util.getSaved(name, dataGetter.savedItems());
-
-		if(item) {
+		var item = util.getSaved(name, dataGetter.getItems());
+		if(item) { // does the item exist
 			var schema = {
 				properties: {
 					confirm: {
@@ -127,7 +126,8 @@ switch (argv._[0]) {
 					}
 				}
 			}
-			prompt.message = "";
+			console.log("  Warning! ".yellow.bold + "You are about to remove " + item.name.cyan + " with MAC " + util.beautifyMac(item.mac).underline);
+			prompt.message = ""; // remove the ugly messages and propts
 			prompt.delimiter = "";
 			prompt.start();
 
