@@ -47,6 +47,7 @@ switch (argv._[0]) {
 			}
 		} else {
 			console.log("  Sending packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
+			dataGetter.updateItemTime(device.name);
 			mac = device.mac;
 		}
 		
@@ -94,7 +95,7 @@ switch (argv._[0]) {
 			name: name,
 			mac: mac,
 			created: Date.now(),
-			lastUse: Date.now()
+			lastUse: "never"
 		}
 
 		// save the device
