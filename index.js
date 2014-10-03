@@ -26,10 +26,10 @@ switch (optimist.argv._[0]) {
 				util.failUp();
 			} else {
 				mac = data;
-				console.log("Sending packet to ".green + mac)
+				console.log("  Sending packet to ".green + mac)
 			}
 		} else {
-			console.log("Sending packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
+			console.log("  Sending packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
 			mac = device.mac;
 		}
 		
@@ -43,7 +43,9 @@ switch (optimist.argv._[0]) {
 	case 'list':
 		dataGetter.listSaved();
 		break;
+	case 'add':
 	default:
-		console.log("HI")
+		console.log("  Usage:".red.bold + " wake {up|list|add}")
+		console.log("  wake -h".bold + " for more help")
 }
 
