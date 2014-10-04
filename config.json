@@ -1,3 +1,5 @@
 {
-	"version": "0.1"
+	"version": "0.1",
+	"delimiter": ":",
+	"wakefile": ".wake.json"
 }

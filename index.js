@@ -43,10 +43,10 @@ switch (argv._[0]) {
 				util.failUp();
 			} else {
 				mac = data;
-				console.log("  Sending packet to ".green + mac)
+				console.log("  Sending magic packet to ".green + mac)
 			}
 		} else {
-			console.log("  Sending packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
+			console.log("  Sending magic packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
 			dataGetter.updateItemTime(device.name);
 			mac = device.mac;
 		}
