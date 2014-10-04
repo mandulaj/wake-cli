@@ -2,13 +2,12 @@
 
 var wol 		= require('wake_on_lan'),
 	optimist 	= require('optimist').boolean('r'),
-	util		= require('./lib/util.js'),
+	util		= require('./lib/util.js')(optimist.argv),
 	colors		= require('colors'),
 	config		= require('./config.json'),
 	prompt		= require('prompt'),
 	dataGetter 	= require('./lib/dataGetter.js');
 
-console.log(optimist.argv)
 var argv = optimist.argv;
 
 if (argv._.length == 0) {
@@ -21,8 +20,6 @@ if (argv._.length == 0) {
 	}
 	process.exit(0)
 }
-
-console.log(argv)
 
 switch (argv._[0]) {
 	case 'up':
@@ -164,7 +161,7 @@ switch (argv._[0]) {
 }
 
 function printGeneralHelp() {
-	console.log("  Usage:".red.bold + " wake {up|list|add|rm}");
-	console.log("  wake -h".bold + " for more help");
+	console.log("  Usage: ".red.bold + argv['$0'] + " {up|list|add|rm}");
+	console.log("  " + argv['$0'].bold + " -h".bold + " for more help");
 }
 
