@@ -1,13 +1,14 @@
 #! /usr/bin/env node
 
 var wol 		= require('wake_on_lan'),
-	optimist 	= require('optimist'),
+	optimist 	= require('optimist').boolean('r'),
 	util		= require('./lib/util.js'),
 	colors		= require('colors'),
 	config		= require('./config.json'),
 	prompt		= require('prompt'),
 	dataGetter 	= require('./lib/dataGetter.js');
 
+console.log(optimist.argv)
 var argv = optimist.argv;
 
 if (argv._.length == 0) {
@@ -20,6 +21,8 @@ if (argv._.length == 0) {
 	}
 	process.exit(0)
 }
+
+console.log(argv)
 
 switch (argv._[0]) {
 	case 'up':
@@ -99,7 +102,16 @@ switch (argv._[0]) {
 		}
 
 		// save the device
-		dataGetter.addItem(device)
+		dataGetter.addItem(device);
+
+		if (argv.r) {
+			console.log("  Sending magic packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
+			wol.wake(device.mac, function(error){
+				if (error !== null) {
+					console.log(data)
+				}
+			});
+		}
 		break;
 	case 'rm':
 		if (argv.h) { // user wants help
