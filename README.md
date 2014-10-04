@@ -1,4 +1,4 @@
-wake
+wake-cli
 ====
 
-wake up your devices
+Wake up your devices
