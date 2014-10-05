@@ -5,7 +5,7 @@ Wake up your devices
 
 A small command line tool for managing the MACs of your devices and sending out the magic packets.
 
-##Instalation
+##Installation
 As simple as `[sudo] npm install -g wake-cli`
 
 ##Usage
@@ -13,11 +13,11 @@ As simple as `[sudo] npm install -g wake-cli`
 
 ####Up
   `wake up <MAC>|<name>`
-  Use this command to wake up a deveice using a speciffic mac or the name stored in the database.
+  Use this command to wake up a device using a specific mac or the name stored in the database.
 
 ###List
   `wake list`
-  Use this command to print a small table of all the saved MAC's and the names you gave them.
+  Use this command to print a small table of all the saved MACs and the names you gave them.
 
 ###Add
   `wake add <name> <MAC>`
@@ -25,7 +25,7 @@ As simple as `[sudo] npm install -g wake-cli`
 
 ###Rm
   `wake rm <name>`
-  If you want to remove a device from the database you can do so with this command. It will ask you for a confirmation and then the device is pernamently deleted from you contact list.
+  If you want to remove a device from the database you can do so with this command. It will ask you for a confirmation and then the device is permanently deleted from you contact list.
 
 ##Options
 For any command you can use the `-h` option to get help with it.
@@ -34,5 +34,5 @@ For any command you can use the `-h` option to get help with it.
   `-v` - prints the version number
 
 ##Contribution
-  * [Jakub Mandula]("https://github.com/zpiman")
+  * [Jakub Mandula](https://github.com/zpiman)
 
