@@ -6,6 +6,7 @@ var wol 		= require('wake_on_lan'),
 	colors		= require('colors'),
 	config		= require('./config.json'),
 	prompt		= require('prompt'),
+	helpFiles	= require('./helpfile.json'),
 	dataGetter 	= require('./lib/dataGetter.js');
 
 var argv = optimist.argv;
@@ -24,7 +25,7 @@ if (argv._.length == 0) {
 switch (argv._[0]) {
 	case 'up':
 		if (argv.h) {
-			console.log("TODO: up help");
+			printHelp("up");
 			process.exit(0);
 		}
 		var mac;
@@ -63,7 +64,7 @@ switch (argv._[0]) {
 		break;
 	case 'add':
 		if (argv.h) { // user wants help
-			console.log("TODO: add help");
+			printHelp("add");
 			process.exit(0);
 		}
 
@@ -112,7 +113,7 @@ switch (argv._[0]) {
 		break;
 	case 'rm':
 		if (argv.h) { // user wants help
-			console.log("TODO: rm help");
+			printHelp("rm");
 			process.exit(0);
 		}
 
@@ -163,5 +164,24 @@ switch (argv._[0]) {
 function printGeneralHelp() {
 	console.log("  Usage: ".red.bold + argv['$0'] + " {up|list|add|rm}");
 	console.log("  " + argv['$0'].bold + " -h".bold + " for more help");
+}
+
+function printHelp(command) {
+	var help = helpFiles[command];
+	if (command === "main") {
+		console.log("---------- " + "wake command help".bold + " ----------");
+	} else {
+		console.log("\nHelp file for ".red.bold + command.cyan.bold+":".cyan.bold);
+	}
+	console.log(help.description);
+	console.log("\nExamples:".bold);
+	for (i in help.examples) {
+		console.log("  " + help.examples[i]);
+	}
+	console.log("\nOptions:".bold)
+	for (i in help.options) {
+		console.log("  " + help.options[i].name.magenta);
+		console.log("    " + help.options[i].description)
+	}
 }
 
