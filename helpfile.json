@@ -1,56 +1,56 @@
 {
-	"up": {
-		"description": "Use this command to wake up a device by sending a magic packet to it",
-		"examples": [
-			"wake up 25:6a:34:4b:cc:01",
-			"wake up home"
-			],
-		"options": [
-			{
-				"name": "-h",
-				"description": "Brings up this help."
-			}
-		]
+    "up": {
+        "description": "Use this command to wake up a device by sending a magic packet to it",
+        "examples": [
+            "wake up 25:6a:34:4b:cc:01",
+            "wake up home"
+            ],
+        "options": [
+            {
+                "name": "-h",
+                "description": "Brings up this help."
+            }
+        ]
 
-	},
-	"list": {
-		"description": "This command will list all the stored devices with their corresponding MAC address",
-		"examples": [
-			"wake list"
-			],
-		"options": [
-			{
-				"name": "-h",
-				"description": "Brings up this help."
-			}
-		]
+    },
+    "list": {
+        "description": "This command will list all the stored devices with their corresponding MAC address",
+        "examples": [
+            "wake list"
+            ],
+        "options": [
+            {
+                "name": "-h",
+                "description": "Brings up this help."
+            }
+        ]
 
-	},
-	"add": {
-		"description": "To store a new device in you wakefile use this command",
-		"examples": [
-			"wake add home 25:6a:34:4b:cc:01"
-			],
-		"options": [
-			{
-				"name": "-h",
-				"description": "Brings up this help."
-			}
-		]
+    },
+    "add": {
+        "description": "To store a new device in you wakefile use this command",
+        "examples": [
+            "wake add home 25:6a:34:4b:cc:01"
+            ],
+        "options": [
+            {
+                "name": "-h",
+                "description": "Brings up this help."
+            }
+        ]
 
-	},
-	"rm": {
-		"description": "If you want to remove a saved device this command is what you are looking for",
-		"examples": [
-			"wake rm home"
-			],
-		"options": [
-			{
-				"name": "-h",
-				"description": "Brings up this help."
-			}
-		]
+    },
+    "rm": {
+        "description": "If you want to remove a saved device this command is what you are looking for",
+        "examples": [
+            "wake rm home"
+            ],
+        "options": [
+            {
+                "name": "-h",
+                "description": "Brings up this help."
+            }
+        ]
 
-	}
+    }
 
 }
