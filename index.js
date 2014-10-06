@@ -11,7 +11,7 @@ var wol         = require('wake_on_lan'),
 
 var argv = optimist.argv;
 
-if (argv._.length == 0) {
+if (argv._.length === 0) {
     if (argv.h){
         console.log("TODO: help");
     } else if (argv.v) {
@@ -19,7 +19,7 @@ if (argv._.length == 0) {
     } else {
         printGeneralHelp();
     }
-    process.exit(0)
+    process.exit(0);
 }
 
 switch (argv._[0]) {
@@ -33,29 +33,29 @@ switch (argv._[0]) {
         if (argv._.length < 2) {
             util.failUp();
         }
-        
+
         // Get the second argument
-        var data = argv._[1]
+        var data = argv._[1];
 
         // if the argument is in the list of saved, get it...
-        var device = dataGetter.getItem(data)
+        var device = dataGetter.getItem(data);
         if (!device) { // If not...
             if (!util.checkMac(data)) { // Is it even a mac?
                 util.failUp();
             } else {
                 mac = data;
-                console.log("  Sending magic packet to ".green + mac)
+                console.log("  Sending magic packet to ".green + mac);
             }
         } else {
             console.log("  Sending magic packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
             dataGetter.updateItemTime(device.name);
             mac = device.mac;
         }
-        
+
         // OK we have the mac so send the packet
         wol.wake(mac, function(error){
             if (error !== null) {
-                console.log(data)
+                console.log(data);
             }
         });
         break;
@@ -97,7 +97,7 @@ switch (argv._[0]) {
             mac: mac,
             created: Date.now(),
             lastUse: "never"
-        }
+        };
 
         // save the device
         dataGetter.addItem(device);
@@ -106,7 +106,7 @@ switch (argv._[0]) {
             console.log("  Sending magic packet to ".green + device.name + "[" + util.beautifyMac(device.mac) + "]");
             wol.wake(device.mac, function(error){
                 if (error !== null) {
-                    console.log(data)
+                    console.log(data);
                 }
             });
         }
@@ -136,7 +136,7 @@ switch (argv._[0]) {
                         required: true
                     }
                 }
-            }
+            };
             console.log("  Warning! ".yellow.bold + "You are about to remove " + item.name.cyan + " with MAC " + util.beautifyMac(item.mac).underline);
             prompt.message = ""; // remove the ugly messages and propts
             prompt.delimiter = "";
@@ -152,7 +152,7 @@ switch (argv._[0]) {
                     process.exit(0);
                 }
             });
-            
+
         } else {
             console.log("   Error: ".red + "device '" + name + "' does not exist");
         }
@@ -186,7 +186,7 @@ switch (argv._[0]) {
                     required: true
                 }
             }
-        }
+        };
 
         break;
     default:
@@ -194,8 +194,8 @@ switch (argv._[0]) {
 }
 
 function printGeneralHelp() {
-    console.log("  Usage: ".red.bold + argv['$0'] + " {up|list|add|rm}");
-    console.log("  " + argv['$0'].bold + " -h".bold + " for more help");
+    console.log("  Usage: ".red.bold + argv.$0 + " {up|list|add|rm}");
+    console.log("  " + argv.$0.bold + " -h".bold + " for more help");
 }
 
 function printHelp(command) {
@@ -207,13 +207,12 @@ function printHelp(command) {
     }
     console.log(help.description);
     console.log("\nExamples:".bold);
-    for (i in help.examples) {
+    for (var i in help.examples) {
         console.log("  " + help.examples[i]);
     }
-    console.log("\nOptions:".bold)
+    console.log("\nOptions:".bold);
     for (i in help.options) {
         console.log("  " + help.options[i].name.magenta);
-        console.log("    " + help.options[i].description)
+        console.log("    " + help.options[i].description);
     }
 }
-
