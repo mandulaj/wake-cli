@@ -11,8 +11,8 @@
                 "description": "Brings up this help."
             }
         ]
-
     },
+
     "list": {
         "description": "This command will list all the stored devices with their corresponding MAC address",
         "examples": [
@@ -24,8 +24,8 @@
                 "description": "Brings up this help."
             }
         ]
-
     },
+
     "add": {
         "description": "To store a new device in you wakefile use this command",
         "examples": [
@@ -37,8 +37,8 @@
                 "description": "Brings up this help."
             }
         ]
-
     },
+
     "rm": {
         "description": "If you want to remove a saved device this command is what you are looking for",
         "examples": [
@@ -50,7 +50,5 @@
                 "description": "Brings up this help."
             }
         ]
-
     }
-
 }
