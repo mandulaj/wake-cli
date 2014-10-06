@@ -9,7 +9,7 @@ A small command line tool for managing the MACs of your devices and sending out 
 As simple as `[sudo] npm install -g wake-cli`
 
 ##Usage
-  Running the command above installs the program into your `$PATH`. The tool creates a `.wake.json` file in your home directory which is used as a database for the MACs.
+  Running the command above installs the program into your `$PATH`. The tool creates a `.wakefile` file in your home directory which is used as a database for the MACs.
 
 ####Up
   `wake up <MAC>|<name>`
