@@ -38,7 +38,7 @@ switch (argv._[0]) {
         var data = argv._[1]
 
         // if the argument is in the list of saved, get it...
-        var device = util.getSaved(data, dataGetter.getItems())
+        var device = dataGetter.getItem(data)
         if (!device) { // If not...
             if (!util.checkMac(data)) { // Is it even a mac?
                 util.failUp();
@@ -124,7 +124,7 @@ switch (argv._[0]) {
 
         var name = argv._[1];
 
-        var item = util.getSaved(name, dataGetter.getItems());
+        var item = dataGetter.getItem(name);
         if(item) { // does the item exist
             var schema = {
                 properties: {
@@ -173,7 +173,7 @@ switch (argv._[0]) {
             console.log("    Error: ".red + argv._[1] + " is not in the list");
             process.exit(-1);
         } else {
-            toEdit = util.getSaved(argv._[1], dataGetter.getItems());
+            toEdit = dataGetter.getItem(argv._[1]);
         }
 
         var schema = {
