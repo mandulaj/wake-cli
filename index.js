@@ -157,6 +157,28 @@ switch (argv._[0]) {
 			console.log("   Error: ".red + "device '" + name + "' does not exist");
 		}
 		break;
+	case "edit":
+		if (argv.h) { // user wants help
+			printHelp("edit");
+			process.exit(0);
+		}
+
+		if (argv._.length < 2) {
+			util.failEdit();
+			process.exit(-1);
+		}
+
+		var toEdit = dataGetter.indexOf(argv._[1]);
+		if ( toEdit == -1 ) {
+			console.log("    Error: ".red + argv._[1] + " is not in the list");
+			process.exit(-1);
+		} else {
+			toEdit = util.getSaved(argv._[1], dataGetter.getItems());
+		}
+
+		console.log(toEdit);
+
+		break;
 	default:
 		printGeneralHelp();
 }
