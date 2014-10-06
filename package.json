@@ -2,12 +2,12 @@
   "name": "wake-cli",
   "version": "0.1.4",
   "description": "WoL command line tool",
-  "keywords": ["wake","wol","client","terminal","tool","lan","network","remote"],
+  "keywords": ["wake", "wol", "client", "terminal", "tool", "lan", "network", "remote"],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-   "bin": {
+  "bin": {
     "wake": "./index.js"
   },
   "repository": {
