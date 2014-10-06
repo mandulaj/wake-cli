@@ -8,6 +8,8 @@ A small command line tool for managing the MACs of your devices and sending out 
 ##Installation
 As simple as `[sudo] npm install -g wake-cli`
 
+You might have to enable the *Wake on lan* in the BIOS of your computer. _Note that not every network card has the WOL capability!_ You will have to do your research. Try [this](http://www.howtogeek.com/70374/how-to-geek-explains-what-is-wake-on-lan-and-how-do-i-enable-it/) for start.
+
 ##Usage
   Running the command above installs the program into your `$PATH`. The tool creates a `.wakefile` file in your home directory which is used as a database for the MACs.
 
