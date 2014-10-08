@@ -13,7 +13,7 @@ var argv = optimist.argv;
 
 if (argv._.length === 0) {
   if (argv.h) {
-    console.log("TODO: help");
+    printHelp("main");
   } else if (argv.v) {
     console.log("Version: " + config.version);
   } else {
@@ -200,8 +200,9 @@ function printGeneralHelp() {
 
 function printHelp(command) {
   var help = helpFiles[command];
+  console.log();
   if (command === "main") {
-    console.log("---------- " + "wake command help".bold + " ----------");
+    console.log("---------- " + "Wake command help".bold + " ----------");
   } else {
     console.log("\nHelp file for ".red.bold + command.cyan.bold + ":".cyan.bold);
   }

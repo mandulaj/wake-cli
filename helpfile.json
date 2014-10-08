@@ -42,5 +42,23 @@
       "name": "-h",
       "description": "Brings up this help."
     }]
+  },
+  "main" : {
+    "description": "The wake command lets you manage the MAC address of your devices and send magic packets to them.",
+    "examples": [
+      "wake up 25:6a:34:4b:cc:01",
+      "wake add home 25:6a:34:4b:cc:01",
+      "wake up home",
+      "wake rm home"
+    ],
+    "options": [{
+      "name": "-h",
+      "description": "Brings up this help."
+    },
+    {
+      "name": "-v",
+      "description": "Print the version of the wake command."
+    }]
+
   }
 }
