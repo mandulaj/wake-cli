@@ -23,6 +23,13 @@ if (argv._.length === 0) {
 }
 
 switch (argv._[0]) {
+  /* wake up
+  *
+  * This command is used to send the magic packet to the device
+  * It will try to read the single argument to the up command and parse it
+  * If it is a valid MAC the magic packet is send to it
+  * Else the wakefile is queried and if a matching saved device is found, its MAC is targeted
+  */
   case 'up':
     if (argv.h) {
       printHelp("up");
@@ -30,6 +37,7 @@ switch (argv._[0]) {
     }
     var mac;
     // Do we have at least 2 arguments?
+    // TODO: this will change to handle a list of files
     if (argv._.length < 2) {
       util.failUp();
     }
@@ -59,9 +67,20 @@ switch (argv._[0]) {
       }
     });
     break;
+  /* wake list
+  *
+  * This command will list all the saved devices located in the wakefile
+  * It will print the name, mac and time of last use in the small table
+  */
   case 'list':
     dataGetter.listSaved();
     break;
+  /* wake add
+  *
+  * To add a new MAC to the list of saved devices use this command
+  * The command will check if the supplied MAC is valid and if the name is free
+  * If both test pass the device is saved to the wakefile for future use.
+  */
   case 'add':
     if (argv.h) { // user wants help
       printHelp("add");
@@ -111,6 +130,13 @@ switch (argv._[0]) {
       });
     }
     break;
+  /* wake rm
+  *
+  * When a device is to be removed from the wakefile permanently this command should be used
+  * The command will check if the name of deice exists in the wakefile
+  * It will then ask the user to confirm the action
+  * After the confirmation the device and its MAC address will be removed from the wakefile
+  */
   case 'rm':
     if (argv.h) { // user wants help
       printHelp("rm");
@@ -157,6 +183,11 @@ switch (argv._[0]) {
       console.log("   Error: ".red + "device '" + name + "' does not exist");
     }
     break;
+  /* wake edit
+  *
+  * To edit an existing device in the wakefile use this command
+  * This command interactively updates the saved values for the selected device
+  */
   case "edit":
     if (argv.h) { // user wants help
       printHelp("edit");
@@ -187,17 +218,19 @@ switch (argv._[0]) {
         }
       }
     };
-
+    // TODO: implement the interactive edit
     break;
   default:
     printGeneralHelp();
 }
 
+// Function that prints a simple usage text when the wake command is used alone
 function printGeneralHelp() {
   console.log("  Usage: ".red.bold + argv.$0 + " {up|list|add|rm}");
   console.log("  " + argv.$0.bold + " -h".bold + " for more help");
 }
 
+// Prints a formated version of the help data for a selected command
 function printHelp(command) {
   var help = helpFiles[command];
   console.log();
