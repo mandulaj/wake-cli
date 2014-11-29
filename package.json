@@ -1,6 +1,6 @@
 {
   "name": "wake-cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "WoL command line tool",
   "keywords": ["wake", "wol", "client", "terminal", "tool", "lan", "network", "remote"],
   "main": "index.js",
