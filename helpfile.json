@@ -3,7 +3,8 @@
     "description": "Use this command to wake up a device by sending a magic packet to it",
     "examples": [
       "wake up 25:6a:34:4b:cc:01",
-      "wake up home"
+      "wake up home",
+      "wake up home 25:6a:34:4b:cc:01"
     ],
     "options": [{
       "name": "-h",
@@ -14,12 +15,23 @@
   "list": {
     "description": "This command will list all the stored devices with their corresponding MAC address",
     "examples": [
-      "wake list"
+      "wake list",
+      "wake list -s name",
+      "wake list -s used -r"
     ],
     "options": [{
       "name": "-h",
       "description": "Brings up this help."
-    }]
+    },
+    {
+      "name": "-s <column>",
+      "description": "Sort the list by the given column."
+    },
+    {
+      "name": "-r",
+      "description": "Sort the list in the reverse order."
+    }
+    ]
   },
 
   "add": {
