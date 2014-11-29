@@ -1,8 +1,17 @@
 {
   "name": "wake-cli",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "WoL command line tool",
-  "keywords": ["wake", "wol", "client", "terminal", "tool", "lan", "network", "remote"],
+  "keywords": [
+    "wake",
+    "wol",
+    "client",
+    "terminal",
+    "tool",
+    "lan",
+    "network",
+    "remote"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,6 +34,7 @@
     "optimist": "^0.6.1",
     "pretty-date": "^0.2.0",
     "prompt": "^0.2.14",
+    "semver": "^4.1.0",
     "wake_on_lan": "0.0.3"
   }
 }
