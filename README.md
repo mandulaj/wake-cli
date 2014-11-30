@@ -5,6 +5,7 @@ wake-cli
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Build Status][travis-image]][travis-url]
   [![Dependencies Status][david-image]][david-url]
+  [![Coveralls Status][coveralls-image]][coveralls-url]
 
 Wake up your devices
 
@@ -55,3 +56,5 @@ For any command you can use the `-h` option to get help with it.
 [travis-url]: https://travis-ci.org/zpiman/wake-cli
 [david-image]: https://img.shields.io/david/zpiman/wake-cli.svg?style=flat
 [david-url]: https://david-dm.org/zpiman/wake-cli
+[coveralls-url]: https://coveralls.io/r/zpiman/wake-cli
+[coveralls-image]: https://img.shields.io/coveralls/zpiman/wake-cli.svg?style=flat
