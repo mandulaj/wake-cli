@@ -85,6 +85,7 @@ describe("Helper Functions", function() {
         expect(util.checkMac("2343a375e367s")).to.be(false);
         expect(util.checkMac("34343434343")).to.be(false);
         expect(util.checkMac("sdsdbgbsdfff")).to.be(false);
+        expect(util.checkMac("ab:ab:abab:ab:ab:")).to.be(false);
       });
       it("should return true on good macs", function() {
         expect(util.checkMac("23:23:23:23:23:23")).to.be(true);
