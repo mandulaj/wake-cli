@@ -1,6 +1,8 @@
 wake-cli
 ====
 
+[![Build Status](https://travis-ci.org/zpiman/wake-cli.svg?branch=master)](https://travis-ci.org/zpiman/wake-cli)
+
 Wake up your devices
 
 A small command line tool for managing the MACs of your devices and sending out the magic packets.
@@ -15,22 +17,22 @@ You might have to enable the *Wake on lan* in the BIOS of your computer. _Note t
 
 ####Up
   `wake up <MAC>|<name>`
-  
+
   Use this command to wake up a device using a specific mac or the name stored in the database.
 
 ###List
   `wake list`
-  
+
   Use this command to print a small table of all the saved MACs and the names you gave them.
 
 ###Add
   `wake add <name> <MAC>`
-  
+
   This command creates a new device in the database and saves it's MAC. The device will now appear in the list and you can use its name instead of the MAC.
 
 ###Rm
   `wake rm <name>`
-  
+
   If you want to remove a device from the database you can do so with this command. It will ask you for a confirmation and then the device is permanently deleted from you contact list.
 
 ##Options
