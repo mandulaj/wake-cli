@@ -46,3 +46,9 @@ For any command you can use the `-h` option to get help with it.
 ##Contribution
   * [Jakub Mandula](https://github.com/zpiman)
 
+[npm-image]: https://img.shields.io/npm/v/wake-cli.svg?style=flat
+[npm-url]: https://npmjs.org/package/wake-cli
+[downloads-image]: https://img.shields.io/npm/dm/wake-cli.svg?style=flat
+[downloads-url]: https://npmjs.org/package/wake-cli
+[travis-image]: https://img.shields.io/travis/zpiman/wake-cli.svg?style=flat
+[travis-url]: https://travis-ci.org/zpiman/wake-cli
