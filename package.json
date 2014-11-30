@@ -38,6 +38,7 @@
     "wake_on_lan": "0.0.3"
   },
   "devDependencies": {
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "expect.js": "^0.3.1"
   }
 }
