@@ -4,6 +4,7 @@ wake-cli
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Build Status][travis-image]][travis-url]
+  [![Dependencies Status][david-image][david-url]
 
 Wake up your devices
 
@@ -52,3 +53,5 @@ For any command you can use the `-h` option to get help with it.
 [downloads-url]: https://npmjs.org/package/wake-cli
 [travis-image]: https://img.shields.io/travis/zpiman/wake-cli.svg?style=flat
 [travis-url]: https://travis-ci.org/zpiman/wake-cli
+[david-image]: https://img.shields.io/david/zpiman/wake-cli.svg?style=flat
+[david-url]: https://david-dm.org/zpiman/wake-cli
