@@ -4,7 +4,7 @@ wake-cli
   [![NPM Version][npm-image]][npm-url]
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Build Status][travis-image]][travis-url]
-  [![Dependencies Status][david-image][david-url]
+  [![Dependencies Status][david-image]][david-url]
 
 Wake up your devices
 
