@@ -1,7 +1,9 @@
 wake-cli
 ====
 
-[![Build Status](https://travis-ci.org/zpiman/wake-cli.svg?branch=master)](https://travis-ci.org/zpiman/wake-cli)
+  [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+  [![Build Status][travis-image]][travis-url]
 
 Wake up your devices
 
