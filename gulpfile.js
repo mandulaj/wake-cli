@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   mocha = require('gulp-mocha'),
+  coveralls = require('gulp-coveralls'),
   istanbul = require('gulp-istanbul');
 
 gulp.task('test', function(cb) {
@@ -11,4 +12,9 @@ gulp.task('test', function(cb) {
         .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', cb);
     });
+});
+
+gulp.task('coverage', function() {
+  gulp.src("coverage/lcov.info")
+    .pipe(coveralls());
 });
