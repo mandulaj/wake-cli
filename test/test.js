@@ -55,6 +55,17 @@ describe("Helper Functions", function() {
         expect(macs).to.have.length(0);
       });
     });
+    describe("#addItem", function() {
+      var macs = dg.getItems();
+      expect(macs).to.have.length(0);
+      dg.addItem({
+        name: "test"
+      });
+      expect(dg.getItem("test")).to.be.an("object");
+      macs = dg.getItems();
+      expect(macs).to.have.length(1);
+      dg.removeItem("test");
+    });
     describe("#getItem", function() {
 
     });
