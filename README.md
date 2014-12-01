@@ -11,6 +11,8 @@ Wake up your devices
 
 A small command line tool for managing the MACs of your devices and sending out the magic packets.
 
+!["Terminal Demo"](http://gifyu.com/images/ezgif-774878134.gif)
+
 ##Installation
 As simple as `[sudo] npm install -g wake-cli`
 
