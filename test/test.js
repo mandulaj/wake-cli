@@ -173,7 +173,7 @@ describe("Helper Functions", function() {
 
     });
   });
-/*
+
   describe("Util", function() {
     var util = require("../lib/util.js")({}, config);
     describe("#constructor", function() {
@@ -257,5 +257,5 @@ describe("Helper Functions", function() {
         expect(util.uglifyMac("212121212121")).to.be("212121212121");
       });
     });
-  });*/
+  });
 });
