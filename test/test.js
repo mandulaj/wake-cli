@@ -21,31 +21,33 @@ describe("Helper Functions", function() {
   describe("DataGetter", function() {
     var conf = clone(config);
     conf.wakefile = "./test/testWakefiles/wakefile1.json";
-    var dg = require("../lib/dataGetter.js")(conf, false);
+    var dg = require("../lib/dataGetter.js")(conf, ".");
+    dg.getDataFromFile();
     describe("#init", function() {
       it("should return and object", function() {
         expect(dg).to.be.an('object');
-        expect(dg.file).to.be.a('string');
+        expect(dg.filePath).to.be.a('string');
         expect(dg.data).to.be.an('object');
       });
       it('should override the default path', function() {
-        expect(dg.file).to.be("./test/testWakefiles/wakefile1.json");
+        expect(dg.filePath).to.be("test/testWakefiles/wakefile1.json");
+
       });
       it('should set the path to be based in the home directory', function() {
         // TODO: test for the correct homedir concat
       });
       it('should have all functions', function() {
         expect(dg.fixOldFormat).to.be.a("function");
-        expect(dg.reparseData).to.be.a("function");
+        expect(dg.serialize).to.be.a("function");
         expect(dg.getItems).to.be.a("function");
-        expect(dg.getItem).to.be.a("function");
+        expect(dg.getItemByName).to.be.a("function");
         expect(dg.indexOfDev).to.be.a("function");
         expect(dg.deviceExists).to.be.a("function");
         expect(dg.addItem).to.be.a("function");
         expect(dg.removeItem).to.be.a("function");
         expect(dg.updateItemTime).to.be.a("function");
-        expect(dg.listSaved).to.be.a("function");
         expect(dg.save).to.be.a("function");
+        expect(dg.buildPath).to.be.a("function");
       });
     });
     describe("#getItems", function() {
@@ -54,6 +56,101 @@ describe("Helper Functions", function() {
         expect(macs).to.be.an("array");
         expect(macs).to.have.length(0);
       });
+      it("should return all the saved elements", function(){
+        dg.addItem({name:"a"});
+        dg.addItem({name:"b"});
+        dg.addItem({name:"c"});
+        dg.addItem({name:"d"});
+        expect(dg.getItems()).to.have.length(4);
+        dg.removeItem("a");
+        expect(dg.getItems()).to.have.length(3);
+        dg.removeItem("c");
+        expect(dg.getItems()).to.have.length(2);
+        dg.removeItem("b");
+        expect(dg.getItems()).to.have.length(1);
+        dg.removeItem("d");
+        expect(dg.getItems()).to.have.length(0);
+      });
+    });
+    describe("#buildPath", function() {
+      it("should return a string path", function(){
+        expect(dg.buildPath("test")).to.be.a("string");
+      });
+      it("should join the base-path with the path from the config file", function(){
+        var path = dg.buildPath("/home/user");
+        expect(path).to.be("/home/user/test/testWakefiles/wakefile1.json");
+        path = dg.buildPath("../../");
+        expect(path).to.be("../../test/testWakefiles/wakefile1.json");
+        path = dg.buildPath("/");
+        expect(path).to.be("/test/testWakefiles/wakefile1.json");
+        path = dg.buildPath("./");
+        expect(path).to.be("test/testWakefiles/wakefile1.json");
+      });
+    });
+    describe("#getDataFromFile", function() {
+      it("should read data form the file at the given path", function(){
+        var conf = clone(config);
+        conf.wakefile = "test/testWakefiles/wakefile2.json";
+        var datget = require("../lib/dataGetter.js")(conf, ".");
+        datget.getDataFromFile();
+        var items = datget.getItems();
+        expect(items).to.have.length(0);
+      });
+    });
+    describe("#makeNewData", function() {
+      it("should return and object with default values", function(){
+        var data = dg.makeNewData();
+        expect(data).to.be.an("object");
+        expect(data.version).to.be(conf.version);
+        expect(data.saved_macs).to.be.an("array");
+        expect(data.saved_macs).to.have.length(0);
+      });
+      it("should ignore false input", function(){
+        var data = dg.makeNewData("straw");
+        expect(data).to.be.an("object");
+        expect(data.version).to.be(conf.version);
+        expect(data.saved_macs).to.be.an("array");
+        expect(data.saved_macs).to.have.length(0);
+        data = dg.makeNewData(true);
+        expect(data).to.be.an("object");
+        expect(data.version).to.be(conf.version);
+        expect(data.saved_macs).to.be.an("array");
+        expect(data.saved_macs).to.have.length(0);
+      });
+      it("should be able to set custom initial objects", function(){
+        var data = dg.makeNewData({
+          key1: [1,2,3,4,5],
+          key2: true,
+          key3: "testing"
+        });
+        expect(data).to.be.an("object");
+        expect(data.key1).to.eql([1,2,3,4,5]);
+        expect(data.key2).to.be(true);
+        expect(data.key3).to.be("testing");
+      });
+    });
+    describe("#parseFileData", function() {
+      it("should return an object", function(){
+        var data = dg.parseFileData('{"name": "test", "saved_macs": [] }');
+        expect(data).to.be.an("object");
+        expect(data).to.eql({name: "test", saved_macs: []});
+      });
+      it("should gracefully return null on bad input", function(){
+        var data = dg.parseFileData("{'name' 'test', 'saved_macs': []}");
+        expect(data).to.be(null);
+      });
+    });
+    describe("#fixOldFormat", function() {
+
+    });
+    describe("#serialize", function() {
+
+    });
+    describe("#indexOfDev", function() {
+
+    });
+    describe("#deviceExists", function() {
+
     });
     describe("#addItem", function() {
       var macs = dg.getItems();
@@ -61,16 +158,22 @@ describe("Helper Functions", function() {
       dg.addItem({
         name: "test"
       });
-      expect(dg.getItem("test")).to.be.an("object");
+      expect(dg.getItemByName("test")).to.be.an("object");
       macs = dg.getItems();
       expect(macs).to.have.length(1);
       dg.removeItem("test");
     });
-    describe("#getItem", function() {
+    describe("#removeItem", function() {
+
+    });
+    describe("#updateItemTime", function() {
+
+    });
+    describe("#save", function() {
 
     });
   });
-
+/*
   describe("Util", function() {
     var util = require("../lib/util.js")({}, config);
     describe("#constructor", function() {
@@ -154,5 +257,5 @@ describe("Helper Functions", function() {
         expect(util.uglifyMac("212121212121")).to.be("212121212121");
       });
     });
-  });
+  });*/
 });
