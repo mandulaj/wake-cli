@@ -175,11 +175,23 @@ describe("Helper Functions", function() {
   });
 
   describe("Util", function() {
-    var util = require("../lib/util.js")({}, config);
+    var conf = clone(config);
+    conf.wakefile = ".";
+    var util = require("../lib/util.js")({$0: "test"}, conf);
     describe("#constructor", function() {
       it("should return and object", function() {
         expect(util).to.be.an("object");
       });
+      it("should override default config if it is provided", function(){
+        expect(util.config).to.eql(conf);
+        expect(util.config).to.not.eql(config);
+      });
+      it("should use default config if no config is provided", function(){
+        var defUtil = require("../lib/util.js")({});
+        expect(defUtil.config).to.eql(config);
+        expect(defUtil.config).to.not.eql(conf);
+        delete defUtil;
+      })
       it("should have all the functions", function() {
         expect(util.checkMac).to.be.a("function");
         expect(util.failUp).to.be.a("function");
@@ -255,6 +267,42 @@ describe("Helper Functions", function() {
       it("should not modify ugly macs", function() {
         expect(util.uglifyMac("ababaddbabab")).to.be("ababaddbabab");
         expect(util.uglifyMac("212121212121")).to.be("212121212121");
+      });
+    });
+    describe("#failUp", function(){
+      it("should return the correct message in the call back", function(done){
+        util.failUp(function(msg){
+          expect(msg).to.be.a("string");
+          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest up <MAC>||<saved item>\n  \u001b[1mtest\u001b[22m\u001b[1m up -h\u001b[22m for more help');
+          done();
+        });
+      });
+    });
+    describe("#failAdd", function(){
+      it("should return the correct message in the call back", function(done){
+        util.failAdd(function(msg){
+          expect(msg).to.be.a("string");
+          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest add <name> <MAC>\n  \u001b[1mtest\u001b[22m\u001b[1m add -h\u001b[22m for more help');
+          done();
+        });
+      });
+    });
+    describe("#failRm", function(){
+      it("should return the correct message in the call back", function(done){
+        util.failRm(function(msg){
+          expect(msg).to.be.a("string");
+          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest rm <name>\n  \u001b[1mtest\u001b[22m\u001b[1m rm -h\u001b[22m for more help');
+          done();
+        });
+      });
+    });
+    describe("#failEdit", function(){
+      it("should return the correct message in the call back", function(done){
+        util.failEdit(function(msg){
+          expect(msg).to.be.a("string");
+          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest edit <name>\n  \u001b[1mtest\u001b[22m\u001b[1m edit -h\u001b[22m for more help');
+          done();
+        });
       });
     });
   });
