@@ -18,11 +18,12 @@ function clone(obj) {
 // TODO: add more tests!
 
 describe("Helper Functions", function() {
+  // set up the local testing config
   var conf = clone(config);
   conf.wakefile = "./test/testWakefiles/wakefile1.json";
-  var dg = require("../lib/dataGetter.js")(conf, ".");
+  var dg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
   dg.getDataFromFile(function(err, data){
-    if (err) expect().fail("Can't get data", err);
+    if (err) expect().fail("Can't get data" + err);
     describe("DataGetter", function() {
       describe("#init", function() {
         it("should return and object", function() {
@@ -67,22 +68,22 @@ describe("Helper Functions", function() {
         var macs = dg.getItems();
         it("should return and array", function() {
           expect(macs).to.be.an("array");
-          expect(macs).to.have.length(0);
+          expect(macs).to.have.length(1);
         });
         it("should return all the saved elements", function(){
           dg.addItem({name:"a"});
           dg.addItem({name:"b"});
           dg.addItem({name:"c"});
           dg.addItem({name:"d"});
-          expect(dg.getItems()).to.have.length(4);
+          expect(dg.getItems()).to.have.length(5);
           dg.removeItem("a");
-          expect(dg.getItems()).to.have.length(3);
+          expect(dg.getItems()).to.have.length(4);
           dg.removeItem("c");
-          expect(dg.getItems()).to.have.length(2);
+          expect(dg.getItems()).to.have.length(3);
           dg.removeItem("b");
-          expect(dg.getItems()).to.have.length(1);
+          expect(dg.getItems()).to.have.length(2);
           dg.removeItem("d");
-          expect(dg.getItems()).to.have.length(0);
+          expect(dg.getItems()).to.have.length(1);
         });
       });
       describe("#buildPath", function() {
@@ -112,6 +113,83 @@ describe("Helper Functions", function() {
             expect(items).to.have.length(0);
             done();
           }, true);
+        });
+        it("should return newly created data if file does not exist", function(done){
+          var conf = clone(config);
+          conf.wakefile = "doesNotExistFilePath.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Get data fail: " + err);
+            expect(data).to.be.an("object");
+            expect(data.saved_macs).to.eql([]);
+            expect(data.version).to.eql(conf.version);
+            done();
+          });
+        });
+        it("should return an error on problem with file reading", function(done){
+          var conf = clone(config);
+          conf.wakefile = "/dev/klog";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "/"); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            expect(data).to.be(null);
+            expect(err.code).to.be("EACCES");
+            done();
+          });
+        });
+        it("should return an error on bad input", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/badInput.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            expect(data).to.be(null);
+            expect(err instanceof SyntaxError).to.be(true);
+            done();
+          });
+        });
+        it("should assign data to self by default", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Error getting data" + err);
+            expect(noFiledg.data).to.be.an("object");
+            expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
+            done();
+          });
+        });
+        it("should assign data to self when asked", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Error getting data" + err);
+            expect(noFiledg.data).to.be.an("object");
+            expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
+            done();
+          }, true);
+        });
+        it("should not assign data to self when assign is false", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Error getting data" + err);
+            expect(noFiledg.data).to.be.an("object");
+            expect(noFiledg.data).to.eql({});
+            done();
+          }, false);
+        });
+
+        it("should assign data to self when new data is created", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Error getting data" + err);
+            expect(noFiledg.data).to.be.an("object");
+            expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
+            done();
+          });
         });
       });
       describe("#makeNewData", function() {
@@ -156,10 +234,11 @@ describe("Helper Functions", function() {
             done();
           });
         });
-        it("should gracefully return null on bad input", function(){
+        it("should gracefully return null on bad input", function(done){
           var data = dg.parseFileData("{'name' 'test', 'saved_macs': []}", function(err, data){
             expect(data).to.be(null);
             expect(err).to.not.be(null);
+            done();
           });
         });
       });
@@ -175,16 +254,23 @@ describe("Helper Functions", function() {
       describe("#deviceExists", function() {
 
       });
-      describe("#addItem", function() {
-        var macs = dg.getItems();
-        expect(macs).to.have.length(0);
-        dg.addItem({
-          name: "test"
-        });
-        expect(dg.getItemByName("test")).to.be.an("object");
-        macs = dg.getItems();
-        expect(macs).to.have.length(1);
-        dg.removeItem("test");
+      describe("#addItemByName", function() {
+        it("should get the item using it's name property", function(){
+          var macs = dg.getItems();
+          expect(macs).to.have.length(1);
+          dg.addItem({
+            name: "test12341234"
+          });
+
+          expect(dg.getItemByName("test12341234")).to.be.an("object");
+          macs = dg.getItems();
+          expect(macs).to.have.length(2);
+          dg.removeItem("test12341234");
+        })
+
+        it("should return -1 when item is not found", function(){
+          expect(dg.getItemByName("doesNotExist")).to.be(-1);
+        })
       });
       describe("#removeItem", function() {
 
@@ -193,7 +279,44 @@ describe("Helper Functions", function() {
 
       });
       describe("#save", function() {
+        var saveConfig = clone(config);
+        saveConfig.wakefile = "./test/testWakefiles/wakefile3.json";
+        it("should save items to file", function(done){
+          var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
+          dgFirst.getDataFromFile(function(){
+            var items_before = dgFirst.getItems();
+            expect(items_before).to.have.length(0);
 
+            dgFirst.addItem({
+              name: "test1"
+            });
+            dgFirst.addItem({
+              name: "test2"
+            });
+            dgFirst.addItem({
+              name: "test3"
+            });
+            var items_next = dgFirst.getItems();
+            expect(items_next).to.have.length(3);
+            dgFirst.save();
+
+            var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
+            dg4.getDataFromFile(function(err, data){
+              if (err) expect().fail("Error while reading file" + err);
+              dg4.parseFileData(data, function(err, data){
+
+                if (err) expect().fail("Error while parsing file" + err);
+                var after = dg4.getItems();
+                expect(after).to.have.length(3);
+                dg4.removeItem("test1");
+                dg4.removeItem("test2");
+                dg4.removeItem("test3");
+                dg4.save();
+                done();
+              }, true);
+            });
+          });
+        });
       });
     });
   });
