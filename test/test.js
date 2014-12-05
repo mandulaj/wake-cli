@@ -1,6 +1,6 @@
 var expect = require("expect.js");
 var config = require("../config.json"); // the real config
-
+var basePath = __dirname;
 function clone(obj) {
   if (obj === null || typeof obj !== 'object')
     return obj;
@@ -20,8 +20,8 @@ function clone(obj) {
 describe("Helper Functions", function() {
   // set up the local testing config
   var conf = clone(config);
-  conf.wakefile = "./test/testWakefiles/wakefile1.json";
-  var dg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+  conf.wakefile = "./testWakefiles/wakefile1.json";
+  var dg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
   dg.getDataFromFile(function(err, data) {
     if (err) expect().fail("Can't get data" + err);
     describe("DataGetter", function() {
@@ -36,21 +36,21 @@ describe("Helper Functions", function() {
         });
 
         it('should use the provided base path', function() {
-          expect(dg.filePath).to.be("test/testWakefiles/wakefile1.json");
+          expect(dg.filePath).to.be(__dirname + "/testWakefiles/wakefile1.json");
         });
 
         it('should used the default configuration when config null is provided', function() {
-          var dg3 = require("../lib/dataGetter.js")(null, ".");
+          var dg3 = require("../lib/dataGetter.js")(null, basePath);
           expect(dg3.config).to.eql(config); // default config
         });
 
         it('should used the default configuration when config false is provided', function() {
-          var dg3 = require("../lib/dataGetter.js")(false, ".");
+          var dg3 = require("../lib/dataGetter.js")(false, basePath);
           expect(dg3.config).to.eql(config); // default config
         });
 
         it('should used the default configuration when config undefined is provided', function() {
-          var dg3 = require("../lib/dataGetter.js")(undefined, ".");
+          var dg3 = require("../lib/dataGetter.js")(undefined, basePath);
           expect(dg3.config).to.eql(config); // default config
         });
 
@@ -110,13 +110,13 @@ describe("Helper Functions", function() {
 
         it("should join the base-path with the path from the config file", function() {
           var path = dg.buildPath("/home/user");
-          expect(path).to.be("/home/user/test/testWakefiles/wakefile1.json");
+          expect(path).to.be("/home/user/testWakefiles/wakefile1.json");
           path = dg.buildPath("../../");
-          expect(path).to.be("../../test/testWakefiles/wakefile1.json");
+          expect(path).to.be("../../testWakefiles/wakefile1.json");
           path = dg.buildPath("/");
-          expect(path).to.be("/test/testWakefiles/wakefile1.json");
+          expect(path).to.be("/testWakefiles/wakefile1.json");
           path = dg.buildPath("./");
-          expect(path).to.be("test/testWakefiles/wakefile1.json");
+          expect(path).to.be("testWakefiles/wakefile1.json");
         });
       });
 
@@ -124,8 +124,8 @@ describe("Helper Functions", function() {
 
         it("should read data form the file at the given path", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile2.json";
-          var datget = require("../lib/dataGetter.js")(conf, ".");
+          conf.wakefile = "testWakefiles/wakefile2.json";
+          var datget = require("../lib/dataGetter.js")(conf, basePath);
           datget.getDataFromFile(function(err, data) {
             if (err)
               expect().fail("Error while getting data: ", err);
@@ -138,7 +138,7 @@ describe("Helper Functions", function() {
         it("should return newly created data if file does not exist", function(done) {
           var conf = clone(config);
           conf.wakefile = "doesNotExistFilePath.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Get data fail: " + err);
             expect(data).to.be.an("object");
@@ -162,8 +162,8 @@ describe("Helper Functions", function() {
 
         it("should return an error on bad input", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/badInput.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/badInput.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             expect(data).to.be(null);
             expect(err instanceof SyntaxError).to.be(true);
@@ -173,8 +173,8 @@ describe("Helper Functions", function() {
 
         it("should assign data to self by default", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile1.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
@@ -185,8 +185,8 @@ describe("Helper Functions", function() {
 
         it("should assign data to self when asked", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile1.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
@@ -197,8 +197,8 @@ describe("Helper Functions", function() {
 
         it("should not assign data to self when assign is false", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile1.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/wakefile1.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
@@ -209,8 +209,8 @@ describe("Helper Functions", function() {
 
         it("should assign data to self when new data is created", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/doesNotExistFilePath.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
@@ -222,8 +222,8 @@ describe("Helper Functions", function() {
 
         it("should assign data to self when new data is created", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/doesNotExistFilePath.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
@@ -541,8 +541,8 @@ describe("Helper Functions", function() {
 
         it("should update the time to current time", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile4.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/wakefile4.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail(err);
             var devices = noFiledg.getItems(); // Get all devices
@@ -559,8 +559,8 @@ describe("Helper Functions", function() {
 
         it("should not change other fields", function(done) {
           var conf = clone(config);
-          conf.wakefile = "test/testWakefiles/wakefile4.json";
-          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          conf.wakefile = "testWakefiles/wakefile4.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, basePath); // make the data getter instance
           noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail(err);
             var devices = noFiledg.getItems(); // Get all devices
@@ -578,10 +578,10 @@ describe("Helper Functions", function() {
 
       describe("#save", function() {
         var saveConfig = clone(config);
-        saveConfig.wakefile = "./test/testWakefiles/wakefile3.json";
+        saveConfig.wakefile = "./testWakefiles/wakefile3.json";
 
         it("should save items to file", function(done) {
-          var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
+          var dgFirst = require("../lib/dataGetter.js")(saveConfig, basePath);
           dgFirst.getDataFromFile(function() {
             var items_before = dgFirst.getItems();
             expect(items_before).to.have.length(0);
@@ -599,7 +599,7 @@ describe("Helper Functions", function() {
             expect(items_next).to.have.length(3);
             dgFirst.save();
 
-            var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
+            var dg4 = require("../lib/dataGetter.js")(saveConfig, basePath);
             dg4.getDataFromFile(function(err, data) {
               if (err) expect().fail("Error while reading file" + err);
               dg4.parseFileData(data, function(err, data) {
@@ -618,7 +618,7 @@ describe("Helper Functions", function() {
         });
 
         it("should use asyc method when a callback is provided", function(done) {
-          var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
+          var dgFirst = require("../lib/dataGetter.js")(saveConfig, basePath);
           dgFirst.getDataFromFile(function() {
             var items_before = dgFirst.getItems();
             expect(items_before).to.have.length(0);
@@ -635,7 +635,7 @@ describe("Helper Functions", function() {
             var items_next = dgFirst.getItems();
             expect(items_next).to.have.length(3);
             dgFirst.save(function() {
-              var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
+              var dg4 = require("../lib/dataGetter.js")(saveConfig, basePath);
               dg4.getDataFromFile(function(err, data) {
                 if (err) expect().fail("Error while reading file" + err);
                 dg4.parseFileData(data, function(err, data) {
@@ -659,7 +659,7 @@ describe("Helper Functions", function() {
 
   describe("Util", function() {
     var conf = clone(config);
-    conf.wakefile = ".";
+    conf.wakefile = basePath;
     var util = require("../lib/util.js")({
       $0: "test"
     }, conf);
