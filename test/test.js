@@ -22,7 +22,7 @@ describe("Helper Functions", function() {
   var conf = clone(config);
   conf.wakefile = "./test/testWakefiles/wakefile1.json";
   var dg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-  dg.getDataFromFile(function(err, data){
+  dg.getDataFromFile(function(err, data) {
     if (err) expect().fail("Can't get data" + err);
     describe("DataGetter", function() {
 
@@ -39,22 +39,19 @@ describe("Helper Functions", function() {
           expect(dg.filePath).to.be("test/testWakefiles/wakefile1.json");
         });
 
-        it('should used the default configuration when config null is provided', function(){
+        it('should used the default configuration when config null is provided', function() {
           var dg3 = require("../lib/dataGetter.js")(null, ".");
           expect(dg3.config).to.eql(config); // default config
-          delete dg3;
         });
 
-        it('should used the default configuration when config false is provided', function(){
+        it('should used the default configuration when config false is provided', function() {
           var dg3 = require("../lib/dataGetter.js")(false, ".");
           expect(dg3.config).to.eql(config); // default config
-          delete dg3;
         });
 
-        it('should used the default configuration when config undefined is provided', function(){
+        it('should used the default configuration when config undefined is provided', function() {
           var dg3 = require("../lib/dataGetter.js")(undefined, ".");
           expect(dg3.config).to.eql(config); // default config
-          delete dg3;
         });
 
         it('should have all functions', function() {
@@ -80,11 +77,19 @@ describe("Helper Functions", function() {
           expect(macs).to.have.length(1);
         });
 
-        it("should return all the saved elements", function(){
-          dg.addItem({name:"a"});
-          dg.addItem({name:"b"});
-          dg.addItem({name:"c"});
-          dg.addItem({name:"d"});
+        it("should return all the saved elements", function() {
+          dg.addItem({
+            name: "a"
+          });
+          dg.addItem({
+            name: "b"
+          });
+          dg.addItem({
+            name: "c"
+          });
+          dg.addItem({
+            name: "d"
+          });
           expect(dg.getItems()).to.have.length(5);
           dg.removeItem("a");
           expect(dg.getItems()).to.have.length(4);
@@ -99,11 +104,11 @@ describe("Helper Functions", function() {
 
       describe("#buildPath", function() {
 
-        it("should return a string path", function(){
+        it("should return a string path", function() {
           expect(dg.buildPath("test")).to.be.a("string");
         });
 
-        it("should join the base-path with the path from the config file", function(){
+        it("should join the base-path with the path from the config file", function() {
           var path = dg.buildPath("/home/user");
           expect(path).to.be("/home/user/test/testWakefiles/wakefile1.json");
           path = dg.buildPath("../../");
@@ -117,11 +122,11 @@ describe("Helper Functions", function() {
 
       describe("#getDataFromFile", function() {
 
-        it("should read data form the file at the given path", function(done){
+        it("should read data form the file at the given path", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile2.json";
           var datget = require("../lib/dataGetter.js")(conf, ".");
-          datget.getDataFromFile(function(err, data){
+          datget.getDataFromFile(function(err, data) {
             if (err)
               expect().fail("Error while getting data: ", err);
             var items = datget.getItems();
@@ -130,11 +135,11 @@ describe("Helper Functions", function() {
           }, true);
         });
 
-        it("should return newly created data if file does not exist", function(done){
+        it("should return newly created data if file does not exist", function(done) {
           var conf = clone(config);
           conf.wakefile = "doesNotExistFilePath.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Get data fail: " + err);
             expect(data).to.be.an("object");
             expect(data.saved_macs).to.eql([]);
@@ -143,34 +148,34 @@ describe("Helper Functions", function() {
           });
         });
 
-        it("should return an error on problem with file reading", function(done){
+        it("should return an error on problem with file reading", function(done) {
           var conf = clone(config);
           // TODO: find a file that is on all OS but it is not readable
           conf.wakefile = "/dev/klog";
           var noFiledg = require("../lib/dataGetter.js")(conf, "/"); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             //expect(data).to.be(null);
             //expect(err.code).to.be("EACCES");
             done();
           });
         });
 
-        it("should return an error on bad input", function(done){
+        it("should return an error on bad input", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/badInput.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             expect(data).to.be(null);
             expect(err instanceof SyntaxError).to.be(true);
             done();
           });
         });
 
-        it("should assign data to self by default", function(done){
+        it("should assign data to self by default", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile1.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
@@ -178,11 +183,11 @@ describe("Helper Functions", function() {
           });
         });
 
-        it("should assign data to self when asked", function(done){
+        it("should assign data to self when asked", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile1.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
@@ -190,11 +195,11 @@ describe("Helper Functions", function() {
           }, true);
         });
 
-        it("should not assign data to self when assign is false", function(done){
+        it("should not assign data to self when assign is false", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile1.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.eql({});
@@ -202,11 +207,11 @@ describe("Helper Functions", function() {
           }, false);
         });
 
-        it("should assign data to self when new data is created", function(done){
+        it("should assign data to self when new data is created", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
@@ -215,11 +220,11 @@ describe("Helper Functions", function() {
           });
         });
 
-        it("should assign data to self when new data is created", function(done){
+        it("should assign data to self when new data is created", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.eql({});
@@ -230,7 +235,7 @@ describe("Helper Functions", function() {
 
       describe("#makeNewData", function() {
 
-        it("should return and object with default values", function(){
+        it("should return and object with default values", function() {
           var data = dg.makeNewData();
           expect(data).to.be.an("object");
           expect(data.version).to.be(conf.version);
@@ -238,7 +243,7 @@ describe("Helper Functions", function() {
           expect(data.saved_macs).to.have.length(0);
         });
 
-        it("should ignore false input", function(){
+        it("should ignore false input", function() {
           var data = dg.makeNewData("straw");
           expect(data).to.be.an("object");
           expect(data.version).to.be(conf.version);
@@ -251,14 +256,14 @@ describe("Helper Functions", function() {
           expect(data.saved_macs).to.have.length(0);
         });
 
-        it("should be able to set custom initial objects", function(){
+        it("should be able to set custom initial objects", function() {
           var data = dg.makeNewData({
-            key1: [1,2,3,4,5],
+            key1: [1, 2, 3, 4, 5],
             key2: true,
             key3: "testing"
           });
           expect(data).to.be.an("object");
-          expect(data.key1).to.eql([1,2,3,4,5]);
+          expect(data.key1).to.eql([1, 2, 3, 4, 5]);
           expect(data.key2).to.be(true);
           expect(data.key3).to.be("testing");
         });
@@ -266,18 +271,21 @@ describe("Helper Functions", function() {
 
       describe("#parseFileData", function() {
 
-        it("should return an object", function(done){
-          var data = dg.parseFileData('{"version": "0.0.0", "saved_macs": [] }', function(err, data){
+        it("should return an object", function(done) {
+          var data = dg.parseFileData('{"version": "0.0.0", "saved_macs": [] }', function(err, data) {
             if (err)
               expect().fail("Error parsing file ", err);
             expect(data).to.be.an("object");
-            expect(data).to.eql({version: "0.1.13", saved_macs: []});
+            expect(data).to.eql({
+              version: "0.1.13",
+              saved_macs: []
+            });
             done();
           });
         });
 
-        it("should gracefully return null on bad input", function(done){
-          var data = dg.parseFileData("{'name' 'test', 'saved_macs': []}", function(err, data){
+        it("should gracefully return null on bad input", function(done) {
+          var data = dg.parseFileData("{'name' 'test', 'saved_macs': []}", function(err, data) {
             expect(data).to.be(null);
             expect(err).to.not.be(null);
             done();
@@ -287,80 +295,68 @@ describe("Helper Functions", function() {
 
       describe("#fixOldFormat", function() {
 
-        it("should return the data unchanged if nothing is to edit", function(){
+        it("should return the data unchanged if nothing is to edit", function() {
           var input = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: -Infinity,
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: -Infinity,
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: -Infinity,
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: -Infinity,
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: -Infinity,
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: -Infinity,
+            }]
           };
           var result = dg.fixOldFormat(input);
           expect(result).to.eql(input);
         });
 
-        it("should update old `lastUse` value", function(){
+        it("should update old `lastUse` value", function() {
           var input = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: "never",
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: "never",
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: "never",
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: "never",
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: "never",
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: "never",
+            }]
           };
           var expected = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }]
           };
           var result = dg.fixOldFormat(input);
           expect(result).to.eql(expected);
@@ -369,80 +365,68 @@ describe("Helper Functions", function() {
 
       describe("#serialize", function() {
 
-        it("should leave OK values intact", function(){
+        it("should leave OK values intact", function() {
           var input = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: -Infinity,
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: Date.now(),
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: Date.now(),
-                lastUse: 23423424223,
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: -Infinity,
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: Date.now(),
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: Date.now(),
+              lastUse: 23423424223,
+            }]
           };
           var result = dg.serialize(input);
           expect(result).to.eql(input);
         });
 
-        it("should convert null in lastUse filed to -Infinity", function(){
+        it("should convert null in lastUse filed to -Infinity", function() {
           var input = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: null,
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: null,
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: null,
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: null,
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: null,
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: null,
+            }]
           };
           var expected = {
             version: config.version,
-            saved_macs: [
-              {
-                name: "test1",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              },
-              {
-                name: "test2",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              },
-              {
-                name: "test3",
-                mac: "232323232323",
-                created: 3423423432423,
-                lastUse: -Infinity,
-              }
-            ]
+            saved_macs: [{
+              name: "test1",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }, {
+              name: "test2",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }, {
+              name: "test3",
+              mac: "232323232323",
+              created: 3423423432423,
+              lastUse: -Infinity,
+            }]
           };
           var result = dg.serialize(input);
           expect(result).to.eql(expected);
@@ -451,13 +435,19 @@ describe("Helper Functions", function() {
 
       describe("#indexOfDev", function() {
 
-        it("should give index of dev by name", function(){
+        it("should give index of dev by name", function() {
           expect(dg.indexOfDev("firstEntry")).to.be(0);
-          dg.addItem({name: "firstInsert"}); // Add first item
+          dg.addItem({
+            name: "firstInsert"
+          }); // Add first item
           expect(dg.indexOfDev("firstInsert")).to.be(1);
-          dg.addItem({name: "secondInsert"}); // Add second item
+          dg.addItem({
+            name: "secondInsert"
+          }); // Add second item
           expect(dg.indexOfDev("secondInsert")).to.be(2);
-          dg.addItem({name: "thirdInsert"}); // add third item
+          dg.addItem({
+            name: "thirdInsert"
+          }); // add third item
           expect(dg.indexOfDev("thirdInsert")).to.be(3);
           dg.removeItem("secondInsert"); // remove second item
           expect(dg.indexOfDev("firstEntry")).to.be(0); // Check if all is ok
@@ -473,7 +463,7 @@ describe("Helper Functions", function() {
           expect(dg.indexOfDev("thirdInsert")).to.be(-1);
         });
 
-        it("should return -1 when item not found", function(){
+        it("should return -1 when item not found", function() {
           expect(dg.indexOfDev("firstInsert")).to.be(-1);
           expect(dg.indexOfDev("secondInsert")).to.be(-1);
           expect(dg.indexOfDev("thirdInsert")).to.be(-1);
@@ -485,13 +475,19 @@ describe("Helper Functions", function() {
 
       describe("#deviceExists", function() {
 
-        it("should return true if device is in the list", function(){
+        it("should return true if device is in the list", function() {
           expect(dg.deviceExists("firstEntry")).to.be(true);
-          dg.addItem({name: "firstInsert"}); // Add first item
+          dg.addItem({
+            name: "firstInsert"
+          }); // Add first item
           expect(dg.deviceExists("firstInsert")).to.be(true);
-          dg.addItem({name: "secondInsert"}); // Add second item
+          dg.addItem({
+            name: "secondInsert"
+          }); // Add second item
           expect(dg.deviceExists("secondInsert")).to.be(true);
-          dg.addItem({name: "thirdInsert"}); // add third item
+          dg.addItem({
+            name: "thirdInsert"
+          }); // add third item
           expect(dg.deviceExists("thirdInsert")).to.be(true);
           dg.removeItem("secondInsert"); // remove second item
           expect(dg.deviceExists("firstEntry")).to.be(true); // Check if all is ok
@@ -507,19 +503,19 @@ describe("Helper Functions", function() {
           expect(dg.deviceExists("thirdInsert")).to.be(false);
         });
 
-        it("should return false if device does not exist", function(){
+        it("should return false if device does not exist", function() {
           expect(dg.deviceExists("firstInsert")).to.be(false);
           expect(dg.deviceExists("secondInsert")).to.be(false);
           expect(dg.deviceExists("thirdInsert")).to.be(false);
           expect(dg.deviceExists("fourthInsert")).to.be(false);
           expect(dg.deviceExists("fifthInsert")).to.be(false);
           expect(dg.deviceExists("sixthInsert")).to.be(false);
-        })
+        });
       });
 
       describe("#addItemByName", function() {
 
-        it("should get the item using it's name property", function(){
+        it("should get the item using it's name property", function() {
           var macs = dg.getItems();
           expect(macs).to.have.length(1);
           dg.addItem({
@@ -530,11 +526,11 @@ describe("Helper Functions", function() {
           macs = dg.getItems();
           expect(macs).to.have.length(2);
           dg.removeItem("test12341234");
-        })
+        });
 
-        it("should return -1 when item is not found", function(){
+        it("should return -1 when item is not found", function() {
           expect(dg.getItemByName("doesNotExist")).to.be(-1);
-        })
+        });
       });
 
       describe("#removeItem", function() {
@@ -543,32 +539,32 @@ describe("Helper Functions", function() {
 
       describe("#updateItemTime", function() {
 
-        it("should update the time to current time", function(done){
+        it("should update the time to current time", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile4.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail(err);
             var devices = noFiledg.getItems(); // Get all devices
-            for(var i in devices) { // For each device
+            for (var i in devices) { // For each device
               var dev = clone(devices[i]); // get the device
               noFiledg.updateItemTime(dev.name); // Update its time
               var time = Date.now(); // Get the time now
-              var newDev = noFiledg.getItemByName(dev.name) // Get the device using its name with updated time
+              var newDev = noFiledg.getItemByName(dev.name); // Get the device using its name with updated time
               expect(newDev.lastUse - time).to.be.below(100); // Expect the new device to have recent use (max 100ms timeout)
             }
             done();
           });
         });
 
-        it("should not change other fields", function(done){
+        it("should not change other fields", function(done) {
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile4.json";
           var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
-          noFiledg.getDataFromFile(function(err, data){
+          noFiledg.getDataFromFile(function(err, data) {
             if (err) expect().fail(err);
             var devices = noFiledg.getItems(); // Get all devices
-            for(var i in devices) { // For each device
+            for (var i in devices) { // For each device
               var dev = clone(devices[i]); // get the device
               noFiledg.updateItemTime(dev.name); // Update its time
               expect(dev).to.not.eql(devices[i]); // the two should be different now
@@ -584,9 +580,9 @@ describe("Helper Functions", function() {
         var saveConfig = clone(config);
         saveConfig.wakefile = "./test/testWakefiles/wakefile3.json";
 
-        it("should save items to file", function(done){
+        it("should save items to file", function(done) {
           var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
-          dgFirst.getDataFromFile(function(){
+          dgFirst.getDataFromFile(function() {
             var items_before = dgFirst.getItems();
             expect(items_before).to.have.length(0);
 
@@ -604,9 +600,9 @@ describe("Helper Functions", function() {
             dgFirst.save();
 
             var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
-            dg4.getDataFromFile(function(err, data){
+            dg4.getDataFromFile(function(err, data) {
               if (err) expect().fail("Error while reading file" + err);
-              dg4.parseFileData(data, function(err, data){
+              dg4.parseFileData(data, function(err, data) {
 
                 if (err) expect().fail("Error while parsing file" + err);
                 var after = dg4.getItems();
@@ -621,9 +617,9 @@ describe("Helper Functions", function() {
           });
         });
 
-        it("should use asyc method when a callback is provided", function(done){
+        it("should use asyc method when a callback is provided", function(done) {
           var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
-          dgFirst.getDataFromFile(function(){
+          dgFirst.getDataFromFile(function() {
             var items_before = dgFirst.getItems();
             expect(items_before).to.have.length(0);
 
@@ -638,25 +634,25 @@ describe("Helper Functions", function() {
             });
             var items_next = dgFirst.getItems();
             expect(items_next).to.have.length(3);
-            dgFirst.save(function(){
+            dgFirst.save(function() {
               var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
-              dg4.getDataFromFile(function(err, data){
+              dg4.getDataFromFile(function(err, data) {
                 if (err) expect().fail("Error while reading file" + err);
-                dg4.parseFileData(data, function(err, data){
+                dg4.parseFileData(data, function(err, data) {
                   if (err) expect().fail("Error while parsing file" + err);
                   var after = dg4.getItems();
                   expect(after).to.have.length(3);
                   dg4.removeItem("test1");
                   dg4.removeItem("test2");
                   dg4.removeItem("test3");
-                  dg4.save(function(){
+                  dg4.save(function() {
                     done();
                   });
                 });
               });
             });
           });
-        })
+        });
       });
     });
   });
@@ -664,24 +660,25 @@ describe("Helper Functions", function() {
   describe("Util", function() {
     var conf = clone(config);
     conf.wakefile = ".";
-    var util = require("../lib/util.js")({$0: "test"}, conf);
+    var util = require("../lib/util.js")({
+      $0: "test"
+    }, conf);
     describe("#constructor", function() {
 
       it("should return and object", function() {
         expect(util).to.be.an("object");
       });
 
-      it("should override default config if it is provided", function(){
+      it("should override default config if it is provided", function() {
         expect(util.config).to.eql(conf);
         expect(util.config).to.not.eql(config);
       });
 
-      it("should use default config if no config is provided", function(){
+      it("should use default config if no config is provided", function() {
         var defUtil = require("../lib/util.js")({});
         expect(defUtil.config).to.eql(config);
         expect(defUtil.config).to.not.eql(conf);
-        delete defUtil;
-      })
+      });
 
       it("should have all the functions", function() {
         expect(util.checkMac).to.be.a("function");
@@ -774,10 +771,10 @@ describe("Helper Functions", function() {
       });
     });
 
-    describe("#failUp", function(){
+    describe("#failUp", function() {
 
-      it("should return the correct message in the call back", function(done){
-        util.failUp(function(msg){
+      it("should return the correct message in the call back", function(done) {
+        util.failUp(function(msg) {
           expect(msg).to.be.a("string");
           expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest up <MAC>||<saved item>\n  \u001b[1mtest\u001b[22m\u001b[1m up -h\u001b[22m for more help');
           done();
@@ -785,10 +782,10 @@ describe("Helper Functions", function() {
       });
     });
 
-    describe("#failAdd", function(){
+    describe("#failAdd", function() {
 
-      it("should return the correct message in the call back", function(done){
-        util.failAdd(function(msg){
+      it("should return the correct message in the call back", function(done) {
+        util.failAdd(function(msg) {
           expect(msg).to.be.a("string");
           expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest add <name> <MAC>\n  \u001b[1mtest\u001b[22m\u001b[1m add -h\u001b[22m for more help');
           done();
@@ -796,10 +793,10 @@ describe("Helper Functions", function() {
       });
     });
 
-    describe("#failRm", function(){
+    describe("#failRm", function() {
 
-      it("should return the correct message in the call back", function(done){
-        util.failRm(function(msg){
+      it("should return the correct message in the call back", function(done) {
+        util.failRm(function(msg) {
           expect(msg).to.be.a("string");
           expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest rm <name>\n  \u001b[1mtest\u001b[22m\u001b[1m rm -h\u001b[22m for more help');
           done();
@@ -807,10 +804,10 @@ describe("Helper Functions", function() {
       });
     });
 
-    describe("#failEdit", function(){
+    describe("#failEdit", function() {
 
-      it("should return the correct message in the call back", function(done){
-        util.failEdit(function(msg){
+      it("should return the correct message in the call back", function(done) {
+        util.failEdit(function(msg) {
           expect(msg).to.be.a("string");
           expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest edit <name>\n  \u001b[1mtest\u001b[22m\u001b[1m edit -h\u001b[22m for more help');
           done();
