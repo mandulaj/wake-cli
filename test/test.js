@@ -157,6 +157,7 @@ describe("Helper Functions", function() {
             done();
           });
         });
+
         it("should assign data to self when asked", function(done){
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile1.json";
@@ -168,6 +169,7 @@ describe("Helper Functions", function() {
             done();
           }, true);
         });
+
         it("should not assign data to self when assign is false", function(done){
           var conf = clone(config);
           conf.wakefile = "test/testWakefiles/wakefile1.json";
@@ -188,9 +190,23 @@ describe("Helper Functions", function() {
             if (err) expect().fail("Error getting data" + err);
             expect(noFiledg.data).to.be.an("object");
             expect(noFiledg.data).to.only.have.keys("version", "saved_macs");
+            expect(noFiledg.data.saved_macs).to.have.length(0);
             done();
           });
         });
+
+        it("should assign data to self when new data is created", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/doesNotExistFilePath.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail("Error getting data" + err);
+            expect(noFiledg.data).to.be.an("object");
+            expect(noFiledg.data).to.eql({});
+            done();
+          }, false);
+        });
+
       });
       describe("#makeNewData", function() {
         it("should return and object with default values", function(){
@@ -243,16 +259,224 @@ describe("Helper Functions", function() {
         });
       });
       describe("#fixOldFormat", function() {
-
+        it("should return the data unchanged if nothing is to edit", function(){
+          var input = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: -Infinity,
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: -Infinity,
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: -Infinity,
+              }
+            ]
+          };
+          var result = dg.fixOldFormat(input);
+          expect(result).to.eql(input);
+        });
+        it("should update old `lastUse` value", function(){
+          var input = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: "never",
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: "never",
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: "never",
+              }
+            ]
+          };
+          var expected = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              }
+            ]
+          };
+          var result = dg.fixOldFormat(input);
+          expect(result).to.eql(expected);
+        });
       });
       describe("#serialize", function() {
-
+        it("should leave OK values intact", function(){
+          var input = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: -Infinity,
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: Date.now(),
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: Date.now(),
+                lastUse: 23423424223,
+              }
+            ]
+          };
+          var result = dg.serialize(input);
+          expect(result).to.eql(input);
+        });
+        it("should convert null in lastUse filed to -Infinity", function(){
+          var input = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: null,
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: null,
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: null,
+              }
+            ]
+          };
+          var expected = {
+            version: config.version,
+            saved_macs: [
+              {
+                name: "test1",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              },
+              {
+                name: "test2",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              },
+              {
+                name: "test3",
+                mac: "232323232323",
+                created: 3423423432423,
+                lastUse: -Infinity,
+              }
+            ]
+          };
+          var result = dg.serialize(input);
+          expect(result).to.eql(expected);
+        });
       });
       describe("#indexOfDev", function() {
-
+        it("should give index of dev by name", function(){
+          expect(dg.indexOfDev("firstEntry")).to.be(0);
+          dg.addItem({name: "firstInsert"}); // Add first item
+          expect(dg.indexOfDev("firstInsert")).to.be(1);
+          dg.addItem({name: "secondInsert"}); // Add second item
+          expect(dg.indexOfDev("secondInsert")).to.be(2);
+          dg.addItem({name: "thirdInsert"}); // add third item
+          expect(dg.indexOfDev("thirdInsert")).to.be(3);
+          dg.removeItem("secondInsert"); // remove second item
+          expect(dg.indexOfDev("firstEntry")).to.be(0); // Check if all is ok
+          expect(dg.indexOfDev("firstInsert")).to.be(1);
+          expect(dg.indexOfDev("thirdInsert")).to.be(2);
+          dg.removeItem("firstInsert"); // Remove first item
+          expect(dg.indexOfDev("firstEntry")).to.be(0); // Check again
+          expect(dg.indexOfDev("thirdInsert")).to.be(1);
+          dg.removeItem("thirdInsert"); // Remove third item
+          expect(dg.indexOfDev("firstEntry")).to.be(0); // Check all items once more
+          expect(dg.indexOfDev("firstInsert")).to.be(-1);
+          expect(dg.indexOfDev("secondInsert")).to.be(-1);
+          expect(dg.indexOfDev("thirdInsert")).to.be(-1);
+        });
+        it("should return -1 when item not found", function(){
+          expect(dg.indexOfDev("firstInsert")).to.be(-1);
+          expect(dg.indexOfDev("secondInsert")).to.be(-1);
+          expect(dg.indexOfDev("thirdInsert")).to.be(-1);
+          expect(dg.indexOfDev("fourthInsert")).to.be(-1);
+          expect(dg.indexOfDev("fifthInsert")).to.be(-1);
+          expect(dg.indexOfDev("sixthInsert")).to.be(-1);
+        });
       });
       describe("#deviceExists", function() {
-
+        it("should return true if device is in the list", function(){
+          expect(dg.deviceExists("firstEntry")).to.be(true);
+          dg.addItem({name: "firstInsert"}); // Add first item
+          expect(dg.deviceExists("firstInsert")).to.be(true);
+          dg.addItem({name: "secondInsert"}); // Add second item
+          expect(dg.deviceExists("secondInsert")).to.be(true);
+          dg.addItem({name: "thirdInsert"}); // add third item
+          expect(dg.deviceExists("thirdInsert")).to.be(true);
+          dg.removeItem("secondInsert"); // remove second item
+          expect(dg.deviceExists("firstEntry")).to.be(true); // Check if all is ok
+          expect(dg.deviceExists("firstInsert")).to.be(true);
+          expect(dg.deviceExists("thirdInsert")).to.be(true);
+          dg.removeItem("firstInsert"); // Remove first item
+          expect(dg.deviceExists("firstEntry")).to.be(true); // Check again
+          expect(dg.deviceExists("thirdInsert")).to.be(true);
+          dg.removeItem("thirdInsert"); // Remove third item
+          expect(dg.deviceExists("firstEntry")).to.be(true); // Check all items once more
+          expect(dg.deviceExists("firstInsert")).to.be(false);
+          expect(dg.deviceExists("secondInsert")).to.be(false);
+          expect(dg.deviceExists("thirdInsert")).to.be(false);
+        });
+        it("should return false if device does not exist", function(){
+          expect(dg.deviceExists("firstInsert")).to.be(false);
+          expect(dg.deviceExists("secondInsert")).to.be(false);
+          expect(dg.deviceExists("thirdInsert")).to.be(false);
+          expect(dg.deviceExists("fourthInsert")).to.be(false);
+          expect(dg.deviceExists("fifthInsert")).to.be(false);
+          expect(dg.deviceExists("sixthInsert")).to.be(false);
+        })
       });
       describe("#addItemByName", function() {
         it("should get the item using it's name property", function(){
@@ -276,7 +500,40 @@ describe("Helper Functions", function() {
 
       });
       describe("#updateItemTime", function() {
-
+        it("should update the time to current time", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/wakefile4.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail(err);
+            var devices = noFiledg.getItems(); // Get all devices
+            for(var i in devices) { // For each device
+              var dev = clone(devices[i]); // get the device
+              noFiledg.updateItemTime(dev.name); // Update its time
+              var time = Date.now(); // Get the time now
+              var newDev = noFiledg.getItemByName(dev.name) // Get the device using its name with updated time
+              expect(newDev.lastUse - time).to.be.below(100); // Expect the new device to have recent use (max 100ms timeout)
+            }
+            done();
+          });
+        });
+        it("should not change other fields", function(done){
+          var conf = clone(config);
+          conf.wakefile = "test/testWakefiles/wakefile4.json";
+          var noFiledg = require("../lib/dataGetter.js")(conf, "."); // make the data getter instance
+          noFiledg.getDataFromFile(function(err, data){
+            if (err) expect().fail(err);
+            var devices = noFiledg.getItems(); // Get all devices
+            for(var i in devices) { // For each device
+              var dev = clone(devices[i]); // get the device
+              noFiledg.updateItemTime(dev.name); // Update its time
+              expect(dev).to.not.eql(devices[i]); // the two should be different now
+              dev.lastUse = devices[i].lastUse; // set the time back to the original
+              expect(dev).to.eql(devices[i]); // check if any other fields changed
+            }
+            done();
+          });
+        });
       });
       describe("#save", function() {
         var saveConfig = clone(config);
@@ -313,10 +570,46 @@ describe("Helper Functions", function() {
                 dg4.removeItem("test3");
                 dg4.save();
                 done();
-              }, true);
+              });
             });
           });
         });
+        it("should use asyc method when a callback is provided", function(done){
+          var dgFirst = require("../lib/dataGetter.js")(saveConfig, ".");
+          dgFirst.getDataFromFile(function(){
+            var items_before = dgFirst.getItems();
+            expect(items_before).to.have.length(0);
+
+            dgFirst.addItem({
+              name: "test1"
+            });
+            dgFirst.addItem({
+              name: "test2"
+            });
+            dgFirst.addItem({
+              name: "test3"
+            });
+            var items_next = dgFirst.getItems();
+            expect(items_next).to.have.length(3);
+            dgFirst.save(function(){
+              var dg4 = require("../lib/dataGetter.js")(saveConfig, ".");
+              dg4.getDataFromFile(function(err, data){
+                if (err) expect().fail("Error while reading file" + err);
+                dg4.parseFileData(data, function(err, data){
+                  if (err) expect().fail("Error while parsing file" + err);
+                  var after = dg4.getItems();
+                  expect(after).to.have.length(3);
+                  dg4.removeItem("test1");
+                  dg4.removeItem("test2");
+                  dg4.removeItem("test3");
+                  dg4.save(function(){
+                    done();
+                  });
+                });
+              });
+            });
+          });
+        })
       });
     });
   });

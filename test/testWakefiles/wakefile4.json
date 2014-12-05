@@ -1,0 +1,23 @@
+{
+  "version":"0.1.4",
+  "saved_macs": [
+    {
+      "name":"test1",
+      "mac":"343434343434",
+      "created":1412603467468,
+      "lastUse":1417417283815
+    },
+    {
+      "name":"test2",
+      "mac":"abababababab",
+      "created":1412603562914,
+      "lastUse":1417279031706
+    },
+    {
+      "name":"test3",
+      "mac":"2323bcdce343",
+      "created":1417417325978,
+      "lastUse":null
+    }
+  ]
+}
