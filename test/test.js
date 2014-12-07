@@ -1,5 +1,7 @@
 var expect = require("expect.js");
 var config = require("../config.json"); // the real config
+
+require('colors');
 var basePath = __dirname;
 
 function clone(obj) {
@@ -805,6 +807,21 @@ describe("Helper Functions", function() {
         var msg = util.failEdit();
         expect(msg).to.be.a("string");
         //expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest edit <name>\n  \u001b[1mtest\u001b[22m\u001b[1m edit -h\u001b[22m for more help');
+      });
+    });
+    describe("#decolorize", function() {
+      it("should remove all special chars from a color string", function() {
+        var str1 = "Hello World";
+        var str2 = "This is a test";
+        var str3 = "I hope it works";
+        var str4 = "Wake cli for the win";
+        var str5 = "3.1415";
+        var str6 = "OpensourceFTW";
+        expect(util.decolorize(str1.red)).to.be(str1);
+        expect(util.decolorize(str1.red + str2.underline.bold.green)).to.be(str1 + str2);
+        expect(util.decolorize(str4.rainbow)).to.be(str4);
+        expect(util.decolorize(str5 + str1.green + str3.bold.green.underline)).to.be(str5 + str1 + str3);
+        expect(util.decolorize(str6.rainbow.underline.bold)).to.be(str6);
       });
     });
   });
