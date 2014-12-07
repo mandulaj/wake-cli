@@ -774,45 +774,37 @@ describe("Helper Functions", function() {
 
     describe("#failUp", function() {
 
-      it("should return the correct message in the call back", function(done) {
-        util.failUp(function(msg) {
-          expect(msg).to.be.a("string");
-          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest up <MAC>||<saved item>\n  \u001b[1mtest\u001b[22m\u001b[1m up -h\u001b[22m for more help');
-          done();
-        });
+      it("should return the correct message in the call back", function() {
+        var msg = util.failUp();
+        expect(msg).to.be.a("string");
+        expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest up <MAC>||<saved item>\n  \u001b[1mtest\u001b[22m\u001b[1m up -h\u001b[22m for more help');
       });
     });
 
     describe("#failAdd", function() {
 
-      it("should return the correct message in the call back", function(done) {
-        util.failAdd(function(msg) {
-          expect(msg).to.be.a("string");
-          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest add <name> <MAC>\n  \u001b[1mtest\u001b[22m\u001b[1m add -h\u001b[22m for more help');
-          done();
-        });
+      it("should return the correct message in the call back", function() {
+        var msg = util.failAdd();
+        expect(msg).to.be.a("string");
+        expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest add <name> <MAC>\n  \u001b[1mtest\u001b[22m\u001b[1m add -h\u001b[22m for more help');
       });
     });
 
     describe("#failRm", function() {
 
-      it("should return the correct message in the call back", function(done) {
-        util.failRm(function(msg) {
-          expect(msg).to.be.a("string");
-          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest rm <name>\n  \u001b[1mtest\u001b[22m\u001b[1m rm -h\u001b[22m for more help');
-          done();
-        });
+      it("should return the correct message in the call back", function() {
+        var msg = util.failRm();
+        expect(msg).to.be.a("string");
+        expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest rm <name>\n  \u001b[1mtest\u001b[22m\u001b[1m rm -h\u001b[22m for more help');
       });
     });
 
     describe("#failEdit", function() {
 
-      it("should return the correct message in the call back", function(done) {
-        util.failEdit(function(msg) {
-          expect(msg).to.be.a("string");
-          expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest edit <name>\n  \u001b[1mtest\u001b[22m\u001b[1m edit -h\u001b[22m for more help');
-          done();
-        });
+      it("should return the correct message in the call back", function() {
+        var msg = util.failEdit();
+        expect(msg).to.be.a("string");
+        expect(msg).to.be('\u001b[1m\u001b[31m  Usage: \u001b[39m\u001b[22mtest edit <name>\n  \u001b[1mtest\u001b[22m\u001b[1m edit -h\u001b[22m for more help');
       });
     });
   });
