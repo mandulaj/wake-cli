@@ -972,8 +972,7 @@ describe("Helper Functions", function() {
             lastUse: 0
           });
           var result = td.renderList();
-          console.log(result)
-            //expect(result).to.match(/12:12:12:12:12:12/);
+          expect(result).to.match(/12:12:12:12:12:12/);
           done();
         });
       });
