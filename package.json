@@ -1,6 +1,6 @@
 {
   "name": "wake-cli",
-  "version": "0.1.13",
+  "version": "0.2.0",
   "description": "WoL command line tool",
   "keywords": [
     "wake",
