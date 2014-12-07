@@ -278,7 +278,7 @@ describe("Helper Functions", function() {
               expect().fail("Error parsing file ", err);
             expect(data).to.be.an("object");
             expect(data).to.eql({
-              version: "0.1.13",
+              version: config.version,
               saved_macs: []
             });
             done();
