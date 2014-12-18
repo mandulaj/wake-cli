@@ -978,38 +978,38 @@ describe("Helper Functions", function() {
       });
     });
 
-    describe("#renderGeneralHelp", function(){
+    describe("#renderGeneralHelp", function() {
       var res = td.renderGeneralHelp();
-      it("should be a string", function(){
+      it("should be a string", function() {
         expect(res).to.be.a("string");
       });
-      it("should have the main parts", function(){
+      it("should have the main parts", function() {
         expect(res).to.match(/Usage/);
         // TODO: add more checks
       });
     });
 
-    describe("#renderHelp", function(){
-      it("should return a string", function(){
+    describe("#renderHelp", function() {
+      it("should return a string", function() {
         expect(td.renderHelp("main")).to.be.a("string");
       });
-      it("should return a default message on unknown command", function(){
+      it("should return a default message on unknown command", function() {
         var res1 = td.renderHelp("blah");
         var res2 = td.renderHelp("3.14159265");
         var res3 = td.renderHelp("thisisatest");
 
-        expect(res1).to.match(/does not exist/)
-        expect(res1).to.match(/blah/)
-        expect(res2).to.match(/does not exist/)
-        expect(res2).to.match(/3.14159265/)
-        expect(res3).to.match(/does not exist/)
-        expect(res3).to.match(/thisisatest/)
+        expect(res1).to.match(/does not exist/);
+        expect(res1).to.match(/blah/);
+        expect(res2).to.match(/does not exist/);
+        expect(res2).to.match(/3.14159265/);
+        expect(res3).to.match(/does not exist/);
+        expect(res3).to.match(/thisisatest/);
       });
-      it("should return the correct help message on main", function(){
+      it("should return the correct help message on main", function() {
         var res = td.renderHelp("main");
         expect(res).to.match(/Wake command help/);
       });
-      it("should return the help files for correct commands", function(){
+      it("should return the help files for correct commands", function() {
         var add = td.renderHelp("add");
         var rm = td.renderHelp("rm");
         //var edit = td.renderHelp("edit");
