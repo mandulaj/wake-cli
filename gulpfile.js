@@ -1,6 +1,8 @@
 var gulp = require('gulp'),
   mocha = require('gulp-mocha'),
   coveralls = require('gulp-coveralls'),
+  jshint = require('gulp-jshint'),
+  jshint_stylish = require('jshint-stylish'),
   istanbul = require('gulp-istanbul');
 
 gulp.task('test', function(cb) {
@@ -18,3 +20,11 @@ gulp.task('coverage', function() {
   gulp.src("coverage/lcov.info")
     .pipe(coveralls());
 });
+
+gulp.task('jshint', function() {
+  gulp.src("lib/**/*js")
+    .pipe(jshint())
+    .pipe(jshint.reporter(jshint_stylish));
+});
+
+gulp.task("default", ['test', 'jshint']);
