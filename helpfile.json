@@ -9,6 +9,10 @@
     "options": [{
       "name": "-h",
       "description": "Brings up this help."
+    },
+    {
+      "name": "-c <seconds>",
+      "description": "Continuous sending of packets, at a given interval."
     }]
   },
 
