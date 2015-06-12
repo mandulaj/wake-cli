@@ -29,7 +29,7 @@ You might have to enable the *Wake on lan* in the BIOS of your computer. _Note t
 
   `wake up <MAC>|<name> -c <seconds>`
 
-  Continuously sends packets at a given interval.
+  Continuously sends packets at a given interval. The default is 120 seconds.
 
 ###List
   `wake list`
@@ -58,6 +58,7 @@ For any command you can use the `-h` option to get help with it.
 
 ##Contribution
   * [Jakub Mandula](https://github.com/zpiman)
+  * [Daniel Fountain](https://github.com/djfountain) - Added 'continuous' functionality.
 
 ## Notice
   This project is still in development. There might be large changes in the interface and successive version might not be compatible. **I am not responsible for any emotional distress caused by the usage of this software!**
