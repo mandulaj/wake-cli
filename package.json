@@ -36,7 +36,8 @@
     "pretty-date": "^0.2.0",
     "prompt": "^0.2.14",
     "semver": "^4.1.0",
-    "wake_on_lan": "0.0.3"
+    "wake_on_lan": "0.0.3",
+    "cli": "latest"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
