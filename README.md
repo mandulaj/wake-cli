@@ -27,13 +27,17 @@ You might have to enable the *Wake on lan* in the BIOS of your computer. _Note t
   Use this command to wake up a device using a specific mac or the name stored in the database.
   You can use a list of macs/names separated by spaces to wake up several devices at once.
 
+  `wake up <MAC>|<name> -c <seconds>`
+
+  Continuously sends packets at a given interval. The default is 120 seconds.
+
 ###List
   `wake list`
 
   Use this command to print a small table of all the saved MACs and the names you gave them.
-  
+
   * `wake list -s <column>` - sort the list using the given column name
-  
+
   * `wake list -r` - reverse the order
 
 ###Add
@@ -54,6 +58,7 @@ For any command you can use the `-h` option to get help with it.
 
 ##Contribution
   * [Jakub Mandula](https://github.com/zpiman)
+  * [Daniel Fountain](https://github.com/djfountain) - Added 'continuous' functionality.
 
 ## Notice
   This project is still in development. There might be large changes in the interface and successive version might not be compatible. **I am not responsible for any emotional distress caused by the usage of this software!**
