@@ -532,7 +532,8 @@ describe("Helper Functions", function() {
         });
 
         it("should return -1 when item is not found", function() {
-          expect(dg.getItemByName("doesNotExist")).to.be(-1);
+          var result = dg.getItemByName("doesNotExist");
+          expect(result).to.be.empty();
         });
       });
 
@@ -553,7 +554,7 @@ describe("Helper Functions", function() {
               var dev = clone(devices[i]); // get the device
               noFiledg.updateItemTime(dev.name); // Update its time
               var time = Date.now(); // Get the time now
-              var newDev = noFiledg.getItemByName(dev.name); // Get the device using its name with updated time
+              var newDev = noFiledg.getItemByName(dev.name)[0]; // Get the device using its name with updated time
               expect(newDev.lastUse - time).to.be.below(100); // Expect the new device to have recent use (max 100ms timeout)
             }
             done();
@@ -739,7 +740,12 @@ describe("Helper Functions", function() {
 
       it("should ignore beautiful macs", function() {
         expect(util.beautifyMac("21:23:23:23:23:23")).to.be("21:23:23:23:23:23");
-        expect(util.beautifyMac("ab:ab:ab:ab:ab:ab")).to.be("ab:ab:ab:ab:ab:ab");
+        expect(util.beautifyMac("AB:AB:AB:AB:AB:AB")).to.be("AB:AB:AB:AB:AB:AB");
+      });
+
+      it("should convert to uppercase", function() {
+        expect(util.beautifyMac("ab:cd:ef:23:23:23")).to.be("AB:CD:EF:23:23:23");
+        expect(util.beautifyMac("aB:cD:eF:AB:AB:AB")).to.be("AB:CD:EF:AB:AB:AB");
       });
     });
 
@@ -767,9 +773,15 @@ describe("Helper Functions", function() {
       });
 
       it("should not modify ugly macs", function() {
-        expect(util.uglifyMac("ababaddbabab")).to.be("ababaddbabab");
+        expect(util.uglifyMac("ababaddbabab")).to.be("ABABADDBABAB");
         expect(util.uglifyMac("212121212121")).to.be("212121212121");
       });
+      it("should convert to lowercase", function() {
+        expect(util.uglifyMac("ababaddbabab")).to.be("ABABADDBABAB");
+        expect(util.uglifyMac("abcdefabcedf")).to.be("ABCDEFABCEDF");
+        expect(util.uglifyMac("ab:cd:ef:12:34:56")).to.be("ABCDEF123456");
+      });
+
     });
 
     describe("#failUp", function() {
