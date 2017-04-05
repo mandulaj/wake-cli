@@ -1,7 +1,6 @@
 var expect = require("expect.js");
 var config = require("../config.json"); // the real config
 
-require('colors');
 var basePath = __dirname;
 
 function clone(obj) {
