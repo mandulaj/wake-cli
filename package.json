@@ -1,6 +1,6 @@
 {
   "name": "wake-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "WoL command line tool",
   "keywords": [
     "wake",
@@ -29,7 +29,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "cli": "^0.11.0",
+    "cli": "^1.0.1",
     "cli-table": "^0.3.1",
     "colors": "^1.1.0",
     "gulp-coveralls": "^0.1.4",
