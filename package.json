@@ -34,7 +34,7 @@
     "colors": "^1.1.0",
     "gulp-coveralls": "^0.1.4",
     "lodash": "^4.17.4",
-    "optimist": "^0.6.1",
+    "minimist": "^1.2.0",
     "pretty-date": "^0.2.0",
     "prompt": "^1.0.0",
     "semver": "^5.3.0",
